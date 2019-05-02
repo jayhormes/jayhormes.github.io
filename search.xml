@@ -3,6 +3,27 @@
   
     
     <entry>
+      <title>如何利用 Git Page 架設 Hexo Blog</title>
+      <link href="/2019/05/02/how-to-build-blog-with-gitpage/"/>
+      <url>/2019/05/02/how-to-build-blog-with-gitpage/</url>
+      <content type="html"><![CDATA[<p><img src="https://i.imgur.com/loX64I7.png" alt=""></p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Hexo 在安裝上實在是非常快速，用起來是輕鬆愉快，<br>相信你看完這篇文章也會覺得這也太容易了！</p><p>但深怕我這金魚腦會忘記，因此還是把它紀錄下來。</p><p>在這邊使用 Windows 的環境，如果需要知道其他系統的安裝方法可以參考 <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noopener">Hexo官方網站</a> 。</p><h2 id="安裝-Hexo"><a href="#安裝-Hexo" class="headerlink" title="安裝 Hexo"></a>安裝 Hexo</h2><p>為了要達到輕鬆愉快的安裝，顯然是要安裝數個強而有力的軟體。<br>請先安裝好 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> 還有 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a>，接下來就是幸福的安裝道路。</p><h3 id="安裝-hexo-cli"><a href="#安裝-hexo-cli" class="headerlink" title="安裝 hexo cli"></a>安裝 hexo cli</h3><p>用 cmd 開啟並且輸入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install -g hexo-cli</span><br></pre></td></tr></table></figure></p><p>建議使用<strong>系統管理員</strong>權限開啟 cmd，避免不必要的問題。</p><h3 id="初始化部落格"><a href="#初始化部落格" class="headerlink" title="初始化部落格"></a>初始化部落格</h3><p>把 cmd cd 到想要放置 blog 的地方輸入：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo init</span><br></pre></td></tr></table></figure></p><p>這樣可以先建立相關的資料檔案進行初始化。</p><p>如果在這邊發生這個錯誤：<br><img src="https://i.imgur.com/T1E4TRZ.png" alt=""><br>就是忘記使用系統管理員權限開啟。</p><p>如果看到 <strong>Start blogging with Hexo!</strong> 就是成功初始化啦！</p><h3 id="第一個部落格"><a href="#第一個部落格" class="headerlink" title="第一個部落格"></a>第一個部落格</h3><p>初始化完畢之後可以先將這些檔案 generate 出來，<br>可以輸入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure></p><p>建立岀部落格可以透過本身自帶的 Server 功能來預覽成果。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure></p><p>用瀏覽器開啟她預設網址就可以看到你的第一個部落格的預覽畫面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:4000/</span><br></pre></td></tr></table></figure></p><h2 id="部屬到-GitHub"><a href="#部屬到-GitHub" class="headerlink" title="部屬到 GitHub"></a>部屬到 GitHub</h2><p>Github 有一個非常棒的 gitpage 可以用來架設靜態網頁，而且會自己帶上 github.io 的網域，<br>又潮又好用，超級推薦。</p><h3 id="安裝部屬工具"><a href="#安裝部屬工具" class="headerlink" title="安裝部屬工具"></a>安裝部屬工具</h3><p>使用下面指令安裝工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p><h3 id="創建-Repository"><a href="#創建-Repository" class="headerlink" title="創建 Repository"></a>創建 Repository</h3><p>在建立一個新 Repo 的時候如果將 Repository name 設定成 <code>{user_name}.github.io</code> 的話，<br>將可以使用這個 Repository name 作為部落格的網址。</p><p>以我自己的Repo為例：<br><img src="https://i.imgur.com/yoFB4WQ.png" alt=""></p><p><strong>但是一個帳號只能有一個 Repo 套用這個規則。</strong></p><h3 id="設定-Repo-位置"><a href="#設定-Repo-位置" class="headerlink" title="設定 Repo 位置"></a>設定 Repo 位置</h3><p>在 Hexo 部落格檔案中找一個 <code>_config.yml</code> 檔案，打開後拉到最下面會看到一個 <code>deploy:</code> 標籤，<br>在這邊把相關的設定檔填上去。({user_name}是你的帳號)<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">deploy:</span><br><span class="line">type: git</span><br><span class="line">repo: https://github.com/jayhormes/&#123;user_name&#125;.github.io</span><br><span class="line">branch: master</span><br></pre></td></tr></table></figure></p><h3 id="Deploy-to-Github"><a href="#Deploy-to-Github" class="headerlink" title="Deploy to Github"></a>Deploy to Github</h3><p>設定完成之後先做一次 clean 讓資料夾乾淨再重新 generate。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$ hexo clean</span><br><span class="line">$ hexo g</span><br></pre></td></tr></table></figure><p>整理完畢後推上 Github。</p><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure><h3 id="部落格上線"><a href="#部落格上線" class="headerlink" title="部落格上線"></a>部落格上線</h3><p>Deploy 成功之後就可以使用{user_name}.github.io 來連到你的 Blog。</p><p>恭喜你，全台最大的部落格上線啦！</p>]]></content>
+      
+      <categories>
+          
+          <category> Blog </category>
+          
+      </categories>
+      
+      
+        <tags>
+            
+            <tag> Hexo </tag>
+            
+        </tags>
+      
+    </entry>
+    
+    <entry>
       <title>Hello World</title>
       <link href="/2018/07/25/hello-world/"/>
       <url>/2018/07/25/hello-world/</url>
