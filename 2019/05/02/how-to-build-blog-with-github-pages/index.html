@@ -117,16 +117,16 @@
 
   <meta name="keywords" content="Hexo">
 <meta property="og:type" content="article">
-<meta property="og:title" content="如何利用 Git Page 架設 Hexo Blog">
-<meta property="og:url" content="http://yoursite.com/2019/05/02/how-to-build-blog-with-gitpage/index.html">
+<meta property="og:title" content="如何利用 Github Pages 架設 Hexo Blog">
+<meta property="og:url" content="http://yoursite.com/2019/05/02/how-to-build-blog-with-github-pages/index.html">
 <meta property="og:site_name" content="4GoodTimes">
 <meta property="og:locale" content="zh-TW">
 <meta property="og:image" content="https://i.imgur.com/loX64I7.png">
 <meta property="og:image" content="https://i.imgur.com/T1E4TRZ.png">
 <meta property="og:image" content="https://i.imgur.com/yoFB4WQ.png">
-<meta property="og:updated_time" content="2019-05-02T10:47:09.203Z">
+<meta property="og:updated_time" content="2019-05-02T10:51:30.733Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="如何利用 Git Page 架設 Hexo Blog">
+<meta name="twitter:title" content="如何利用 Github Pages 架設 Hexo Blog">
 <meta name="twitter:image" content="https://i.imgur.com/loX64I7.png">
 
 
@@ -136,7 +136,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/05/02/how-to-build-blog-with-gitpage/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/05/02/how-to-build-blog-with-github-pages/"/>
 
 
 
@@ -146,7 +146,7 @@
   };
 </script>
 
-  <title>如何利用 Git Page 架設 Hexo Blog | 4GoodTimes</title>
+  <title>如何利用 Github Pages 架設 Hexo Blog | 4GoodTimes</title>
   
 
 
@@ -342,7 +342,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/02/how-to-build-blog-with-gitpage/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/05/02/how-to-build-blog-with-github-pages/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Jay Hormes">
@@ -359,7 +359,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">如何利用 Git Page 架設 Hexo Blog
+          <h1 class="post-title" itemprop="name headline">如何利用 Github Pages 架設 Hexo Blog
               
             
           </h1>
@@ -384,7 +384,7 @@
                 
               
 
-              <time title="創建時間：2019-05-02 17:26:20 / 修改時間：18:47:09" itemprop="dateCreated datePublished" datetime="2019-05-02T17:26:20+08:00">2019-05-02</time>
+              <time title="創建時間：2019-05-02 17:26:20 / 修改時間：18:51:30" itemprop="dateCreated datePublished" datetime="2019-05-02T17:26:20+08:00">2019-05-02</time>
             
 
             
@@ -455,7 +455,7 @@
 <h3 id="第一個部落格"><a href="#第一個部落格" class="headerlink" title="第一個部落格"></a>第一個部落格</h3><p>初始化完畢之後可以先將這些檔案 generate 出來，<br>可以輸入以下指令：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo g</span><br></pre></td></tr></table></figure></p>
 <p>建立岀部落格可以透過本身自帶的 Server 功能來預覽成果。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo s</span><br></pre></td></tr></table></figure></p>
 <p>用瀏覽器開啟她預設網址就可以看到你的第一個部落格的預覽畫面。<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">http://localhost:4000/</span><br></pre></td></tr></table></figure></p>
-<h2 id="部屬到-GitHub"><a href="#部屬到-GitHub" class="headerlink" title="部屬到 GitHub"></a>部屬到 GitHub</h2><p>Github 有一個非常棒的 gitpage 可以用來架設靜態網頁，而且會自己帶上 github.io 的網域，<br>又潮又好用，超級推薦。</p>
+<h2 id="部屬到-GitHub"><a href="#部屬到-GitHub" class="headerlink" title="部屬到 GitHub"></a>部屬到 GitHub</h2><p>Github 有一個非常棒的 Pages 可以用來架設靜態網頁，而且會自己帶上 github.io 的網域，<br>又潮又好用，超級推薦。</p>
 <h3 id="安裝部屬工具"><a href="#安裝部屬工具" class="headerlink" title="安裝部屬工具"></a>安裝部屬工具</h3><p>使用下面指令安裝工具：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ npm install hexo-deployer-git --save</span><br></pre></td></tr></table></figure></p>
 <h3 id="創建-Repository"><a href="#創建-Repository" class="headerlink" title="創建 Repository"></a>創建 Repository</h3><p>在建立一個新 Repo 的時候如果將 Repository name 設定成 <code>{user_name}.github.io</code> 的話，<br>將可以使用這個 Repository name 作為部落格的網址。</p>
 <p>以我自己的Repo為例：<br><img src="https://i.imgur.com/yoFB4WQ.png" alt=""></p>
