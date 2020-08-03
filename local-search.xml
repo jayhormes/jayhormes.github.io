@@ -1,87 +1,82 @@
 <?xml version="1.0" encoding="utf-8"?>
-<feed xmlns="http://www.w3.org/2005/Atom">
-  <title>我的時間很少</title>
+<search>
   
-  <subtitle>用程式，創造更多時間。</subtitle>
-  <link href="/atom.xml" rel="self"/>
   
-  <link href="http://yoursite.com/"/>
-  <updated>2019-10-05T07:04:05.988Z</updated>
-  <id>http://yoursite.com/</id>
-  
-  <author>
-    <name>Jay Hormes</name>
-    
-  </author>
-  
-  <generator uri="http://hexo.io/">Hexo</generator>
   
   <entry>
     <title>為什麼 WriteFile 後出現一堆空白？(用 USES_CONVERSION 解)</title>
-    <link href="http://yoursite.com/Code/why-writefile-appear-many-spaces/"/>
-    <id>http://yoursite.com/Code/why-writefile-appear-many-spaces/</id>
-    <published>2019-10-05T06:25:51.000Z</published>
-    <updated>2019-10-05T07:04:05.988Z</updated>
+    <link href="/Code/why-writefile-appear-many-spaces/"/>
+    <url>/Code/why-writefile-appear-many-spaces/</url>
     
     <content type="html"><![CDATA[<p><img src="https://i.imgur.com/tdfkidN.png" srcset="/img/loading.gif" alt=""></p><p>在幫公司修改舊程式的時候發現 <em>WriteFile()</em> 結束後出現一大堆空白符號，到底是怎麼回事？</p><a id="more"></a><h2 id="議題原因"><a href="#議題原因" class="headerlink" title="議題原因"></a>議題原因</h2><p>這份 Code 是已經定義為 Unicode 的格式，所以相關功能都是用 TCHAR 來進行，<br>雖然傳入變數已經型別轉換過，但是寫入之前還必須要再轉回來才可以。</p><h2 id="找方法"><a href="#找方法" class="headerlink" title="找方法"></a>找方法</h2><p>在網路上找看看有沒有跟我一樣的苦主，發現這一篇。 <a href="https://bbs.csdn.net/topics/310086090" target="_blank" rel="noopener">为什么 WriteFile 写文件中间好多空格</a>。<br>文章之精采大家都沒有辦法提出解法，最後原 PO 自行破關讓人感到佩服，讚讚。<br>不過還是來看一下這個東西的用法。</p><pre><code class="hljs cpp">USES_CONVERSION;DWORD cb = <span class="hljs-built_in">strlen</span>(T2A(msg)) * <span class="hljs-keyword">sizeof</span> *T2A(msg);WriteFile(h,T2A(msg), cb, &amp;cb, <span class="hljs-number">0</span>);</code></pre><p>看起來簡單但是直覺重點應該放在 <strong>T2A(msg)</strong>。</p><pre><code class="hljs cpp"><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> T2A W2A</span><span class="hljs-meta">#<span class="hljs-meta-keyword">define</span> W2A(lpw) (\</span>((_lpw = lpw) == <span class="hljs-literal">NULL</span>) ? <span class="hljs-literal">NULL</span> : (\(_convert = (<span class="hljs-keyword">static_cast</span>&lt;<span class="hljs-keyword">int</span>&gt;(wcslen(_lpw))+<span class="hljs-number">1</span>), \(_convert&gt;INT_MAX/<span class="hljs-number">2</span>) ? <span class="hljs-literal">NULL</span> : \ATLW2AHELPER((LPSTR) alloca(_convert*<span class="hljs-keyword">sizeof</span>(WCHAR)), _lpw, _convert*<span class="hljs-keyword">sizeof</span>(WCHAR), _acp))))</code></pre><p>這段 Code 看起來要特別注意 <em>alloca</em>，所以使用上要避免把這個東西放在 loop 裡面，不然記憶體很快就會不見了。<br>最好也是把這個寫成獨立 function 避免出問題。</p><h2 id="實作"><a href="#實作" class="headerlink" title="實作"></a>實作</h2><p>看完使用前說明書後就可以愉快使用啦！</p><p>如果不想使用 macro 也可以自己寫一個轉換功能。</p><pre><code class="hljs cpp"><span class="hljs-comment">//Function that safely converts a 'WCHAR' String to 'LPSTR':</span><span class="hljs-function"><span class="hljs-keyword">char</span>* <span class="hljs-title">ConvertLPWSTRToLPSTR</span><span class="hljs-params">(LPWSTR lpwszStrIn)</span></span><span class="hljs-function"></span>&#123;LPSTR pszOut = <span class="hljs-literal">NULL</span>;<span class="hljs-keyword">if</span> (lpwszStrIn != <span class="hljs-literal">NULL</span>)&#123;<span class="hljs-keyword">int</span> nInputStrLen = wcslen(lpwszStrIn);<span class="hljs-comment">// Double NULL Termination</span><span class="hljs-keyword">int</span> nOutputStrLen = WideCharToMultiByte(CP_ACP, <span class="hljs-number">0</span>, lpwszStrIn, nInputStrLen, <span class="hljs-literal">NULL</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>) + <span class="hljs-number">2</span>;pszOut = <span class="hljs-keyword">new</span> <span class="hljs-keyword">char</span>[nOutputStrLen];<span class="hljs-keyword">if</span> (pszOut)&#123;<span class="hljs-built_in">memset</span>(pszOut, <span class="hljs-number">0x00</span>, nOutputStrLen);WideCharToMultiByte(CP_ACP, <span class="hljs-number">0</span>, lpwszStrIn, nInputStrLen, pszOut, nOutputStrLen, <span class="hljs-number">0</span>, <span class="hljs-number">0</span>);&#125;&#125;<span class="hljs-keyword">return</span> pszOut;&#125;</code></pre><p>印出來的東西正常看起來就是賞心悅目～</p><h2 id="參考網站"><a href="#參考網站" class="headerlink" title="參考網站"></a>參考網站</h2><ul><li><a href="https://bbs.csdn.net/topics/310086090" target="_blank" rel="noopener">为什么 WriteFile 写文件中间好多空格</a></li><li><a href="https://blog.csdn.net/thanklife/article/details/70208841" target="_blank" rel="noopener">慎用USES_CONVERSION 使用和注意</a></li></ul>]]></content>
     
-    <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/tdfkidN.png&quot; srcset=&quot;/img/loading.gif&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
-&lt;p&gt;在幫公司修改舊程式的時候發現 &lt;em&gt;WriteFile()&lt;/em&gt; 結束後出現一大堆空白符號，到底是怎麼回事？&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Code" scheme="http://yoursite.com/categories/Code/"/>
+    <categories>
+      
+      <category>Code</category>
+      
+    </categories>
     
     
-      <category term="C/C++" scheme="http://yoursite.com/tags/C-C/"/>
+    <tags>
+      
+      <tag>C/C++</tag>
+      
+    </tags>
     
   </entry>
+  
+  
   
   <entry>
     <title>如何利用 Github Pages 架設 Hexo Blog</title>
-    <link href="http://yoursite.com/Blog/how-to-build-blog-with-github-pages/"/>
-    <id>http://yoursite.com/Blog/how-to-build-blog-with-github-pages/</id>
-    <published>2019-05-02T09:26:20.000Z</published>
-    <updated>2019-12-05T06:18:00.780Z</updated>
+    <link href="/Blog/how-to-build-blog-with-github-pages/"/>
+    <url>/Blog/how-to-build-blog-with-github-pages/</url>
     
     <content type="html"><![CDATA[<p><img src="https://i.imgur.com/loX64I7.png" srcset="/img/loading.gif" alt=""></p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>Hexo 在安裝上實在是非常快速，用起來是輕鬆愉快，<br>相信你看完這篇文章也會覺得這也太容易了！</p><p>但深怕我這金魚腦會忘記，因此還是把它紀錄下來。</p><p>在這邊使用 Windows 的環境，如果需要知道其他系統的安裝方法可以參考 <a href="https://hexo.io/zh-tw/docs/" target="_blank" rel="noopener">Hexo官方網站</a> 。</p><h2 id="安裝-Hexo"><a href="#安裝-Hexo" class="headerlink" title="安裝 Hexo"></a>安裝 Hexo</h2><p>為了要達到輕鬆愉快的安裝，顯然是要安裝數個強而有力的軟體。<br>請先安裝好 <a href="https://nodejs.org/en/" target="_blank" rel="noopener">Node.js</a> 還有 <a href="https://git-scm.com/" target="_blank" rel="noopener">Git</a>，接下來就是幸福的安裝道路。</p><h3 id="安裝-hexo-cli"><a href="#安裝-hexo-cli" class="headerlink" title="安裝 hexo cli"></a>安裝 hexo cli</h3><p>用 cmd 開啟並且輸入：</p><pre><code class="hljs bash">npm install -g hexo-cli</code></pre><p>建議使用<strong>系統管理員</strong>權限開啟 cmd，避免不必要的問題。</p><h3 id="初始化部落格"><a href="#初始化部落格" class="headerlink" title="初始化部落格"></a>初始化部落格</h3><p>把 cmd cd 到想要放置 blog 的地方輸入：</p><pre><code class="hljs bash">hexo init</code></pre><p>這樣可以先建立相關的資料檔案進行初始化。</p><p>如果在這邊發生這個錯誤：<br><img src="https://i.imgur.com/T1E4TRZ.png" srcset="/img/loading.gif" alt=""><br>就是忘記使用系統管理員權限開啟。</p><p>如果看到 <strong>Start blogging with Hexo!</strong> 就是成功初始化啦！</p><h3 id="第一個部落格"><a href="#第一個部落格" class="headerlink" title="第一個部落格"></a>第一個部落格</h3><p>初始化完畢之後可以先將這些檔案 generate 出來，<br>可以輸入以下指令：</p><pre><code class="hljs bash">hexo g</code></pre><p>以後新增或者更新 blog 也都只要用這個指令即可。</p><p>建立岀部落格後可以透過本身自帶的 Server 功能來預覽成果。</p><pre><code class="hljs bash">hexo s</code></pre><p>用瀏覽器開啟預設網址就可以看到你的第一個部落格預覽畫面。</p><pre><code class="hljs dts"><span class="hljs-symbol">http:</span><span class="hljs-comment">//localhost:4000/</span></code></pre><h2 id="部屬到-GitHub"><a href="#部屬到-GitHub" class="headerlink" title="部屬到 GitHub"></a>部屬到 GitHub</h2><p>Github 有一個非常棒的 Pages 可以用來架設靜態網頁，而且會自己帶上 github.io 的網域，<br>又潮又好用，超級推薦。</p><h3 id="安裝部屬工具"><a href="#安裝部屬工具" class="headerlink" title="安裝部屬工具"></a>安裝部屬工具</h3><p>使用下面指令安裝工具：</p><pre><code class="hljs bash">npm install hexo-deployer-git --save</code></pre><h3 id="創建-Repository"><a href="#創建-Repository" class="headerlink" title="創建 Repository"></a>創建 Repository</h3><p>在建立一個新 Repo 的時候如果將 Repository name 設定成 <code>{user_name}.github.io</code> 的話，<br>將可以使用這個 Repository name 作為部落格的網址。</p><p>以我自己的Repo為例：<br><img src="https://i.imgur.com/yoFB4WQ.png" srcset="/img/loading.gif" alt=""></p><p><strong>但是一個帳號只能有一個 Repo 套用這個規則。</strong></p><h3 id="設定-Repo-位置"><a href="#設定-Repo-位置" class="headerlink" title="設定 Repo 位置"></a>設定 Repo 位置</h3><p>在 Hexo 部落格檔案中找一個 <code>_config.yml</code> 檔案，打開後拉到最下面會看到一個 <code>deploy:</code> 標籤，<br>在這邊把相關的設定檔填上去。({user_name}是你的帳號)</p><pre><code class="hljs groovy"><span class="hljs-string">deploy:</span><span class="hljs-string">type:</span> git<span class="hljs-string">repo:</span> <span class="hljs-string">https:</span><span class="hljs-comment">//github.com/&#123;user_name&#125;/&#123;user_name&#125;.github.io</span><span class="hljs-string">branch:</span> master</code></pre><h3 id="Deploy-to-Github"><a href="#Deploy-to-Github" class="headerlink" title="Deploy to Github"></a>Deploy to Github</h3><p>設定完成之後先做一次 clean 讓資料夾乾淨再重新 generate。</p><pre><code class="hljs bash">hexo cleanhexo g</code></pre><p>整理完畢後推上 Github。</p><pre><code class="hljs bash">hexo s</code></pre><h3 id="部落格上線"><a href="#部落格上線" class="headerlink" title="部落格上線"></a>部落格上線</h3><p>Deploy 成功之後就可以使用{user_name}.github.io 來連到你的 Blog。</p><p>恭喜你，全台最大的部落格上線啦！</p>]]></content>
     
-    <summary type="html">
     
-      &lt;p&gt;&lt;img src=&quot;https://i.imgur.com/loX64I7.png&quot; srcset=&quot;/img/loading.gif&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+    <categories>
+      
+      <category>Blog</category>
+      
+    </categories>
     
-    </summary>
     
-      <category term="Blog" scheme="http://yoursite.com/categories/Blog/"/>
-    
-    
-      <category term="Hexo" scheme="http://yoursite.com/tags/Hexo/"/>
+    <tags>
+      
+      <tag>Hexo</tag>
+      
+    </tags>
     
   </entry>
+  
+  
   
   <entry>
     <title>Hello World</title>
-    <link href="http://yoursite.com/Talk/hello-world/"/>
-    <id>http://yoursite.com/Talk/hello-world/</id>
-    <published>2018-07-25T10:07:15.769Z</published>
-    <updated>2020-06-15T03:51:25.037Z</updated>
+    <link href="/Talk/hello-world/"/>
+    <url>/Talk/hello-world/</url>
     
     <content type="html"><![CDATA[<p><em>謹以此篇紀念那些被我荒廢長草的部落格</em></p><p><em>與感謝在網路上分享技術文章的大大們</em></p><a id="more"></a><h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在程式設計的路上，最不可或缺的能力就是 <strong>Google</strong> 。<br>如果網路上沒有一些高手樂於分享自己的經驗，真的很難想像這個世界會變成什麼樣子。</p><p>雖然我離高手還有一段距離，但是每隔一段時間都會有想要建立部落格的衝動。</p><p>2017 年看過一篇文章，<a href="https://dotblogs.com.tw/hatelove/2017/03/26/why-engineers-should-keep-blogging" target="_blank" rel="noopener">我為什麼鼓勵工程師寫 blog</a>，<br>看完的感觸很深，所以馬上用 Blogger 開了一個小小部落格並且囉嗦了幾句。<br>過沒多久那個 Blogger 就開始變得綠意盎然，儼然是一片大草原。<br>因為同時我也是 Evernote 的愛用者，覺得寫筆記很順手不太需要寫到 Blog。</p><p>2018 年年初，訂了一些年度目標，同時也思考著如何能夠讓自己更加精進，<br>馬上就想起那篇文章的建議，要將學習的東西內化並且順暢的撰寫出來，<br>因此其中一項目標就是要有一個自己的部落格。</p><p>這次要從頭開始蓋，做一個自己的雅舍，做一個紀錄自己的歷程記錄。</p><p>讓我們開始吧，<strong>Hello World</strong></p><h2 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h2><p>因緣際會之下，有幾次協助朋友架設 Wordpress 的經驗，因而接觸到 heroku 這個平台，<br>那時候就覺得把網頁改一改就推上去也太方便了，覺得可以找一些使用 Command line 操作的平台來實作 Blog 。</p><p>我的需求：</p><ol><li>支援 Markdown 語法</li><li>使用 Command line 操作</li><li>使用 git contorl</li></ol><p>眾裡尋他千百度，發現 <a href="https://hexo.io" target="_blank" rel="noopener">Hexo</a> 真的很符合我的需求，而且作者還是台灣人！真的很厲害。<br>感謝 <a href="https://zespia.tw/blog/2012/10/11/hexo-debut/" target="_blank" rel="noopener">Tommy Chen</a> 創造一個如此有趣的 Framework 。</p><p>又想到 GitHub 有<code>gh-pages</code>可以使用，既可以不用思考網域問題還可以使用 git 來管控網頁。</p><p>覺得這樣玩起來應該很有意思。</p><h2 id="Just-do-it"><a href="#Just-do-it" class="headerlink" title="Just do it"></a>Just do it</h2><p>既然選定工具了，從現在開始就要來一磚一瓦慢慢累積。<br>在下一篇預計會記錄 Hexo 的創建過程，還有 Next 主題的改造。<br>(不過其實 Hexo 實在太好用了，可能不會用到多少篇幅)</p><p>先期許自己可以達成每月 <em>最少一篇</em> 的低標，好好維持寫作的手感。</p><p><strong>Go Go Go</strong></p>]]></content>
     
-    <summary type="html">
     
-      &lt;p&gt;&lt;em&gt;謹以此篇紀念那些被我荒廢長草的部落格&lt;/em&gt;&lt;/p&gt;
-&lt;p&gt;&lt;em&gt;與感謝在網路上分享技術文章的大大們&lt;/em&gt;&lt;/p&gt;
-    
-    </summary>
-    
-      <category term="Talk" scheme="http://yoursite.com/categories/Talk/"/>
+    <categories>
+      
+      <category>Talk</category>
+      
+    </categories>
     
     
-      <category term="Milestone" scheme="http://yoursite.com/tags/Milestone/"/>
+    <tags>
+      
+      <tag>Milestone</tag>
+      
+    </tags>
     
   </entry>
   
-</feed>
+  
+  
+  
+</search>
