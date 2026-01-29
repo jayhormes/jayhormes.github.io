@@ -1,0 +1,59 @@
+---
+import { getSupportedLanguages, siteConfig } from "../config";
+import Pagination from "../components/control/Pagination.astro";
+import PostPage from "../components/PostPage.astro";
+import { PAGE_SIZE } from "../constants/constants";
+import MainGridLayout from "../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../utils/content-utils";
+import { i18n } from "../i18n/translation";
+import I18nKey from "../i18n/i18nKey";
+import { getSiteDefaultLanguage } from "../utils/site-language-utils";
+
+export async function getStaticPaths() {
+    const supportedLanguages = getSupportedLanguages();
+    const defaultLang = getSiteDefaultLanguage();
+    
+    const paths = [];
+    
+    for (const langKey of Object.keys(supportedLanguages)) {
+        if (langKey === defaultLang) continue; // Exclude default language
+        
+        // Get posts filtered by language
+        const langPosts = await getSortedPosts(langKey);
+        const totalPages = Math.ceil(langPosts.length / PAGE_SIZE);
+        
+        paths.push({
+            params: { lang: langKey },
+            props: {
+                page: {
+                    data: langPosts.slice(0, PAGE_SIZE),
+                    url: {
+                        current: `/${langKey}/`,
+                        prev: undefined,
+                        next: totalPages > 1 ? `/${langKey}/2/` : undefined,
+                        first: `/${langKey}/`,
+                        last: totalPages > 1 ? `/${langKey}/${totalPages}/` : `/${langKey}/`,
+                    },
+                    currentPage: 1,
+                    lastPage: totalPages,
+                    total: langPosts.length,
+                    size: PAGE_SIZE,
+                    start: 0,
+                    end: Math.min(PAGE_SIZE - 1, langPosts.length - 1),
+                },
+                currentLang: langKey
+            }
+        });
+    }
+    
+    return paths;
+}
+
+const { page, currentLang } = Astro.props;
+const len = page.data.length;
+---
+
+<MainGridLayout title={i18n(I18nKey.home)} lang={currentLang}>
+    <PostPage page={page}></PostPage>
+    <Pagination class="mx-auto onload-animation" page={page} style={`animation-delay: calc(var(--content-delay) + ${(len)*50}ms)`}></Pagination>
+</MainGridLayout>

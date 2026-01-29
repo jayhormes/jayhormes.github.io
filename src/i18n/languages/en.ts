@@ -5,6 +5,7 @@ export const en: Translation = {
 	[Key.home]: "Home",
 	[Key.about]: "About",
 	[Key.archive]: "Archive",
+	[Key.gallery]: "Gallery",
 	[Key.projects]: "Projects",
 	[Key.search]: "Search",
 
@@ -36,4 +37,19 @@ export const en: Translation = {
 	[Key.author]: "Author",
 	[Key.publishedAt]: "Published at",
 	[Key.license]: "License",
+
+	// Language selector
+	[Key.languageSelector]: "Language",
+	[Key.english]: "English",
+	[Key.chineseSimplified]: "简体中文",
+	[Key.chineseTraditional]: "繁體中文",
+	[Key.japanese]: "日本語",
+	[Key.korean]: "한국어",
+	[Key.spanish]: "Español",
+	[Key.thai]: "ไทย",
+
+	// Gallery page
+	[Key.galleryFoundPosts]: "Found {count} posts",
+	[Key.galleryNoPostsFound]: "No posts found for this collection.",
+	[Key.galleryTryAddingTags]: "Try adding posts with tags: {tags}",
 };

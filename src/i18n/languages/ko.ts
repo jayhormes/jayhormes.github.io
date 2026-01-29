@@ -5,6 +5,7 @@ export const ko: Translation = {
 	[Key.home]: "홈",
 	[Key.about]: "소개",
 	[Key.archive]: "아카이브",
+	[Key.gallery]: "갤러리",
 	[Key.projects]: "프로젝트",
 	[Key.search]: "검색",
 
@@ -36,4 +37,19 @@ export const ko: Translation = {
 	[Key.author]: "저자",
 	[Key.publishedAt]: "게시일",
 	[Key.license]: "라이선스",
+
+	// Language selector
+	[Key.languageSelector]: "언어",
+	[Key.english]: "English",
+	[Key.chineseSimplified]: "简体中文",
+	[Key.chineseTraditional]: "繁體中文",
+	[Key.japanese]: "日本語",
+	[Key.korean]: "한국어",
+	[Key.spanish]: "Español",
+	[Key.thai]: "ไทย",
+
+	// Gallery page
+	[Key.galleryFoundPosts]: "{count}개의 게시물을 찾았습니다",
+	[Key.galleryNoPostsFound]: "이 컬렉션에서 게시물을 찾을 수 없습니다.",
+	[Key.galleryTryAddingTags]: "다음 태그가 있는 게시물을 추가해 보세요: {tags}",
 };

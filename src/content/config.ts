@@ -23,6 +23,7 @@ const postsCollection = defineCollection({
 const specCollection = defineCollection({
 	schema: z.object({
 		title: z.string().optional(),
+		lang: z.string().optional(),
 	}),
 });
 

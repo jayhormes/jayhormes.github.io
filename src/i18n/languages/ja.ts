@@ -2,9 +2,10 @@ import Key from "../i18nKey";
 import type { Translation } from "../translation";
 
 export const ja: Translation = {
-	[Key.home]: "Home",
-	[Key.about]: "About",
-	[Key.archive]: "Archive",
+	[Key.home]: "ホーム",
+	[Key.about]: "概要",
+	[Key.archive]: "アーカイブ",
+	[Key.gallery]: "ギャラリー",
 	[Key.projects]: "プロジェクト",
 	[Key.search]: "検索",
 
@@ -36,4 +37,19 @@ export const ja: Translation = {
 	[Key.author]: "作者",
 	[Key.publishedAt]: "公開日",
 	[Key.license]: "ライセンス",
+
+	// Language selector
+	[Key.languageSelector]: "言語",
+	[Key.english]: "English",
+	[Key.chineseSimplified]: "简体中文",
+	[Key.chineseTraditional]: "繁體中文",
+	[Key.japanese]: "日本語",
+	[Key.korean]: "한국어",
+	[Key.spanish]: "Español",
+	[Key.thai]: "ไทย",
+
+	// Gallery page
+	[Key.galleryFoundPosts]: "{count}件の投稿が見つかりました",
+	[Key.galleryNoPostsFound]: "このコレクションの投稿が見つかりませんでした。",
+	[Key.galleryTryAddingTags]: "次のタグを持つ投稿を追加してみてください：{tags}",
 };

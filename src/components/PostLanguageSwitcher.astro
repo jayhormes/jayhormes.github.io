@@ -1,0 +1,158 @@
+---
+import { getSupportedLanguages } from "../config";
+import { getPostLanguageVersions, extractLanguageFromSlug } from "../utils/post-language-utils";
+import { getLanguageUrl } from "../utils/site-language-utils";
+import { i18n } from "../i18n/translation";
+import I18nKey from "../i18n/i18nKey";
+
+interface Props {
+	currentSlug: string;
+	currentLang: string;
+	currentPath: string;
+}
+
+const { currentSlug, currentLang, currentPath } = Astro.props;
+
+// Extract base slug
+const { baseSlug } = extractLanguageFromSlug(currentSlug);
+
+// Get all available language versions
+const versions = await getPostLanguageVersions(baseSlug);
+const supportedLanguages = getSupportedLanguages();
+---
+
+{Object.keys(versions).length > 1 && (
+	<div class="language-switcher-container">
+		<div class="language-switcher">
+			<div class="switcher-label">
+				<i class="fa-solid fa-language"></i>
+				<span>Available Languages</span>
+			</div>
+			<div class="language-options">
+				{Object.entries(supportedLanguages).map(([langKey, langInfo]) => {
+					const isAvailable = langKey in versions;
+					const isActive = langKey === currentLang;
+					const url = isAvailable 
+						? getLanguageUrl(langKey, `/posts/${versions[langKey]}`)
+						: '#';
+					
+					return (
+						<a
+							href={url}
+							class:list={[
+								'language-option',
+								{ 'active': isActive },
+								{ 'unavailable': !isAvailable }
+							]}
+							aria-label={`Switch to ${langInfo.name}`}
+							title={isAvailable ? langInfo.name : `${langInfo.name} (Not available)`}
+						>
+							<span class="flag">{langInfo.flag}</span>
+							<span class="name">{langInfo.name}</span>
+							{!isAvailable && <span class="unavailable-badge">N/A</span>}
+						</a>
+					);
+				})}
+			</div>
+		</div>
+	</div>
+)}
+
+<style>
+	.language-switcher-container {
+		margin: 2rem 0;
+		padding: 1.5rem;
+		background: var(--card-bg);
+		border-radius: 0.75rem;
+		border: 1px solid var(--line-divider);
+	}
+
+	.language-switcher {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.switcher-label {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		font-weight: 600;
+		color: var(--primary);
+		font-size: 0.95rem;
+	}
+
+	.switcher-label i {
+		font-size: 1.1rem;
+	}
+
+	.language-options {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+	}
+
+	.language-option {
+		display: flex;
+		align-items: center;
+		gap: 0.5rem;
+		padding: 0.5rem 1rem;
+		border-radius: 0.5rem;
+		border: 1px solid var(--line-divider);
+		background: var(--btn-plain-bg);
+		color: var(--btn-plain-text);
+		text-decoration: none;
+		transition: all 0.2s ease;
+		font-size: 0.9rem;
+	}
+
+	.language-option:hover:not(.unavailable) {
+		background: var(--btn-regular-bg);
+		border-color: var(--primary);
+		transform: translateY(-2px);
+	}
+
+	.language-option.active {
+		background: var(--primary);
+		color: white;
+		border-color: var(--primary);
+		font-weight: 600;
+	}
+
+	.language-option.unavailable {
+		opacity: 0.4;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	.flag {
+		font-size: 1.2rem;
+	}
+
+	.name {
+		white-space: nowrap;
+	}
+
+	.unavailable-badge {
+		font-size: 0.7rem;
+		padding: 0.1rem 0.3rem;
+		background: rgba(255, 0, 0, 0.2);
+		border-radius: 0.25rem;
+		color: #ff6b6b;
+	}
+
+	@media (max-width: 768px) {
+		.language-switcher-container {
+			padding: 1rem;
+		}
+
+		.language-options {
+			gap: 0.5rem;
+		}
+
+		.language-option {
+			padding: 0.4rem 0.8rem;
+			font-size: 0.85rem;
+		}
+	}
+</style>

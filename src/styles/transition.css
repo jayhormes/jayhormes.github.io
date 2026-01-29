@@ -27,9 +27,10 @@ html.is-animating .transition-swup-fade {
 #navbar {
     animation-delay: 0ms
 }
-#sidebar {
+/* Remove sidebar global animation to prevent double animation with individual components */
+/*#sidebar {
     animation-delay: 100ms
-}
+}*/
 #swup-container {
     outline: none;
 }

@@ -1,0 +1,38 @@
+---
+import { getSupportedLanguages, siteConfig } from "../../config";
+import ArchivePanel from "../../components/ArchivePanel.svelte";
+import { i18n } from "../../i18n/translation";
+import I18nKey from "../../i18n/i18nKey";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPosts } from "../../utils/content-utils";
+import { getSiteDefaultLanguage } from "../../utils/site-language-utils";
+
+export async function getStaticPaths() {
+    const supportedLanguages = getSupportedLanguages();
+    
+    const defaultLang = getSiteDefaultLanguage();
+    
+    return Object.keys(supportedLanguages)
+        .filter(lang => lang !== defaultLang) // Exclude the default language because it uses the root route
+        .map(lang => ({
+            params: { lang }
+        }));
+}
+
+const { lang } = Astro.params;
+
+const currentLang = lang || getSiteDefaultLanguage();
+
+const posts = await getSortedPosts(lang);
+const title = i18n(I18nKey.archive, currentLang);
+---
+
+<MainGridLayout title={title} lang={currentLang} banner={siteConfig.pages?.archive?.src}>
+    <div class="onload-animation">
+        <div class="card-base rounded-[var(--radius-large)] overflow-hidden">
+            <div class="relative w-full">
+                <ArchivePanel sortedPosts={posts} client:only="svelte" />
+            </div>
+        </div>
+    </div>
+</MainGridLayout>

@@ -1,0 +1,161 @@
+---
+import { Icon } from "astro-icon/components";
+import { getSupportedLanguages } from "../config";
+import { i18n } from "../i18n/translation";
+import I18nKey from "../i18n/i18nKey";
+import { getSiteDefaultLanguage, getLanguageUrl } from "../utils/site-language-utils";
+import { getLanguageFromPath, removeLanguageFromPath } from "../utils/language-utils";
+
+const supportedLanguages = getSupportedLanguages();
+const defaultLang = getSiteDefaultLanguage();
+
+// Get current language from URL using standardized function
+const currentPath = Astro.url.pathname;
+const currentLang = getLanguageFromPath(currentPath);
+
+// Get the path without language prefix for URL construction
+const basePath = removeLanguageFromPath(currentPath);
+
+// Debug logging
+console.log('LanguageSelector Debug:', {
+    currentPath,
+    currentLang,
+    basePath
+});
+---
+
+<div class="relative group">
+    <button 
+        class="btn-plain scale-animation rounded-lg h-11 w-11 active:scale-90 flex items-center justify-center"
+        aria-label={i18n(I18nKey.languageSelector)}
+        id="language-selector"
+    >
+        <Icon name="material-symbols:language" size={20} />
+    </button>
+    
+    <div 
+        class="language-dropdown absolute right-0 top-12 bg-[var(--card-bg)] border border-[var(--line-divider)] rounded-lg shadow-lg p-2 min-w-[150px] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50"
+        id="language-dropdown"
+    >
+        {Object.entries(supportedLanguages).map(([langKey, langInfo]) => {
+            const isActive = currentLang === langKey;
+            // Use the utility function to generate correct URL
+            const href = getLanguageUrl(langKey, basePath);
+            
+            // Debug URL generation
+            console.log(`Generating URL for ${langKey}:`, {
+                langKey,
+                basePath,
+                href,
+                isActive
+            });
+            
+            return (
+                <a
+                    href={href}
+                    data-target-lang={langKey}
+                    data-base-path={basePath}
+                    data-href={href}
+                    class={`flex items-center px-3 py-2 rounded-md transition-colors ${
+                        isActive 
+                            ? 'bg-[var(--primary)] text-white' 
+                            : 'hover:bg-[var(--btn-plain-bg-hover)] text-[var(--primary)]'
+                    }`}
+                    aria-current={isActive ? 'page' : undefined}
+                >
+                    <span class="mr-2 text-lg">{langInfo.flag}</span>
+                    <span class="text-sm font-medium">{langInfo.name}</span>
+                </a>
+            );
+        })}
+    </div>
+</div>
+
+<style>
+    .language-dropdown {
+        backdrop-filter: blur(10px);
+    }
+    
+    .group:hover .language-dropdown {
+        opacity: 1;
+        visibility: visible;
+    }
+</style>
+
+<script>
+    // Enhanced dropdown behavior with click support
+    function initLanguageSelector() {
+        const button = document.getElementById('language-selector');
+        const dropdown = document.getElementById('language-dropdown');
+        
+        if (!button || !dropdown) return;
+        
+        let isOpen = false;
+        
+        // Toggle dropdown on button click
+        button.addEventListener('click', (e) => {
+            e.stopPropagation();
+            isOpen = !isOpen;
+            
+            if (isOpen) {
+                dropdown.classList.add('opacity-100', 'visible');
+                dropdown.classList.remove('opacity-0', 'invisible');
+            } else {
+                dropdown.classList.add('opacity-0', 'invisible');
+                dropdown.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        // Add click handlers to language links to force page reload
+        const languageLinks = dropdown.querySelectorAll('a[href]');
+        languageLinks.forEach(link => {
+            link.addEventListener('click', (e) => {
+                // Get the target URL and navigate there with full page reload
+                const href = (link as HTMLAnchorElement).href;
+                const targetLang = link.getAttribute('data-target-lang');
+                
+                console.log(`🌐 Language switch: ${targetLang} -> ${href}`);
+                console.log('Current URL:', window.location.href);
+                console.log('Target URL:', href);
+                
+                // Prevent default click behavior
+                e.preventDefault();
+                
+                // Force navigation with full page reload
+                try {
+                    window.location.href = href;
+                } catch (error) {
+                    console.error('Navigation error:', error);
+                    // Fallback to replace if href assignment fails
+                    window.location.replace(href);
+                }
+            });
+        });
+        
+        // Close dropdown when clicking outside
+        document.addEventListener('click', (e) => {
+            const target = e.target as Element;
+            if (!button.contains(target) && !dropdown.contains(target)) {
+                isOpen = false;
+                dropdown.classList.add('opacity-0', 'invisible');
+                dropdown.classList.remove('opacity-100', 'visible');
+            }
+        });
+        
+        // Close dropdown on escape key
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && isOpen) {
+                isOpen = false;
+                dropdown.classList.add('opacity-0', 'invisible');
+                dropdown.classList.remove('opacity-100', 'visible');
+                button.focus();
+            }
+        });
+    }
+    
+    // Initialize on page load
+    document.addEventListener('DOMContentLoaded', initLanguageSelector);
+    
+    // Re-initialize after page transitions (for SPA-like behavior)
+    document.addEventListener('astro:page-load', initLanguageSelector);
+</script>

@@ -32,6 +32,12 @@ export type SiteConfig = {
 			textAlign?: string;
 		};
 	};
+	pages: {
+		archive?: PageBannerConfig;
+		gallery?: PageBannerConfig;
+		projects?: PageBannerConfig;
+		about?: PageBannerConfig;
+	};
 	toc: {
 		enable: boolean;
 		depth: 1 | 2 | 3;
@@ -46,11 +52,29 @@ export type Favicon = {
 	sizes?: string;
 };
 
+export type PageBannerConfig = {
+	src: string;
+	position?: "top" | "center" | "bottom";
+};
+
+export type GalleryCollection = {
+	name: string;
+	description?: string;
+	tags: string[];
+	displayMode?: "grid" | "table";
+};
+
+// Multilingual Gallery Config - allows different collection names/descriptions per language
+export type MultilingualGalleryConfig = {
+	collections: GalleryCollection[];
+};
+
 export enum LinkPreset {
 	Home = 0,
 	Archive = 1,
-	Projects = 2,
-	About = 3,
+	Gallery = 2,
+	Projects = 3,
+	About = 4,
 }
 
 export type NavBarLink = {
@@ -72,7 +96,20 @@ export type ProfileConfig = {
 		url: string;
 		icon: string;
 	}[];
+	about?: {
+		avatar?: string; // Professional avatar for About page
+		title?: string; // Professional title for About page
+		subtitle?: string; // Professional subtitle for About page
+		enableProfessionalMode?: boolean; // Enable professional mode (shows professional header + full width layout, hides sidebar)
+		badge?: {
+			enable?: boolean; // Enable/disable the professional badge
+			icon?: string; // Icon for the badge (e.g., "fa6-solid:briefcase")
+		};
+	};
 };
+
+// Multilingual Profile Config - allows different profile info per language
+export type MultilingualProfileConfig = Record<string, ProfileConfig>;
 
 export type LicenseConfig = {
 	enable: boolean;

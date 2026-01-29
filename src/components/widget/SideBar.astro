@@ -6,17 +6,19 @@ import Tag from "./Tags.astro";
 
 interface Props {
 	class?: string;
+	style?: string;
 	headings?: MarkdownHeading[];
+	lang?: string;
 }
 
-const className = Astro.props.class;
+const { class: className, style, lang }: Props = Astro.props;
 ---
-<div id="sidebar" class:list={[className, "w-full"]}>
+<div id="sidebar" class:list={[className, "w-full"]} style={style}>
     <div class="flex flex-col w-full gap-4 mb-4">
-        <Profile></Profile>
+        <Profile class="onload-animation" style="animation-delay: 250ms" lang={lang}></Profile>
     </div>
     <div id="sidebar-sticky" class="transition-all duration-700 flex flex-col w-full gap-4 top-4 sticky top-4">
-        <Categories class="onload-animation" style="animation-delay: 150ms"></Categories>
-        <Tag class="onload-animation" style="animation-delay: 200ms"></Tag>
+        <Categories class="onload-animation" style="animation-delay: 150ms" lang={lang}></Categories>
+        <Tag class="onload-animation" style="animation-delay: 200ms" lang={lang}></Tag>
     </div>
 </div>

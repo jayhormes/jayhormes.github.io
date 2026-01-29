@@ -1,0 +1,103 @@
+---
+import { getSupportedLanguages } from "../config";
+
+interface Props {
+	requestedLang: string;
+	actualLang: string;
+}
+
+const { requestedLang, actualLang } = Astro.props;
+const supportedLanguages = getSupportedLanguages();
+
+const requestedLangInfo = supportedLanguages[requestedLang as keyof typeof supportedLanguages];
+const actualLangInfo = supportedLanguages[actualLang as keyof typeof supportedLanguages];
+---
+
+<div class="translation-warning">
+	<div class="warning-icon">
+		<i class="fa-solid fa-language"></i>
+	</div>
+	<div class="warning-content">
+		<p class="warning-title">
+			Translation Not Available
+		</p>
+		<p class="warning-message">
+			This article is not available in <strong>{requestedLangInfo?.flag} {requestedLangInfo?.name}</strong>.
+			Showing the <strong>{actualLangInfo?.flag} {actualLangInfo?.name}</strong> version instead.
+		</p>
+	</div>
+</div>
+
+<style>
+	.translation-warning {
+		display: flex;
+		gap: 1rem;
+		padding: 1rem 1.25rem;
+		margin: 1.5rem 0;
+		background: rgba(255, 193, 7, 0.1);
+		border-left: 4px solid #ffc107;
+		border-radius: 0.5rem;
+		color: var(--content-text-color);
+	}
+
+	.warning-icon {
+		flex-shrink: 0;
+		display: flex;
+		align-items: center;
+		justify-content: center;
+		width: 2rem;
+		height: 2rem;
+		background: rgba(255, 193, 7, 0.2);
+		border-radius: 50%;
+		color: #f57c00;
+	}
+
+	.warning-icon i {
+		font-size: 1.1rem;
+	}
+
+	.warning-content {
+		flex: 1;
+	}
+
+	.warning-title {
+		font-weight: 600;
+		margin: 0 0 0.5rem 0;
+		font-size: 0.95rem;
+		color: #f57c00;
+	}
+
+	.warning-message {
+		margin: 0;
+		font-size: 0.9rem;
+		line-height: 1.5;
+	}
+
+	.warning-message strong {
+		color: var(--primary);
+	}
+
+	@media (max-width: 768px) {
+		.translation-warning {
+			padding: 0.875rem 1rem;
+			gap: 0.75rem;
+		}
+
+		.warning-icon {
+			width: 1.75rem;
+			height: 1.75rem;
+		}
+
+		.warning-icon i {
+			font-size: 1rem;
+		}
+
+		.warning-title {
+			font-size: 0.9rem;
+		}
+
+		.warning-message {
+			font-size: 0.85rem;
+		}
+	}
+</style>

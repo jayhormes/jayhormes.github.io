@@ -8,13 +8,14 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
-import { siteConfig } from "../config";
+import { siteConfig, getSupportedLanguages } from "../config";
 import {
 	BANNER_HEIGHT,
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
 import { pathsEqual, url } from "../utils/url-utils";
+import { getSiteDefaultLanguage } from "../utils/site-language-utils";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -38,8 +39,31 @@ const hasBannerCredit =
 	siteConfig.banner.enable && siteConfig.banner.credit.enable;
 const hasBannerLink = !!siteConfig.banner.credit.url;
 
-// Check if current page is home page
-const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
+// Check if current page is home page (including language-specific home pages)
+function isHomePageCheck(pathname: string): boolean {
+	// Check if it's the root home page
+	if (pathsEqual(pathname, url("/"))) {
+		return true;
+	}
+	
+	// Check if it's a language-specific home page (e.g., /zh-tw/, /ja/)
+	const supportedLanguages = getSupportedLanguages();
+	const defaultLang = getSiteDefaultLanguage();
+	
+	for (const lang of Object.keys(supportedLanguages)) {
+		// Skip default language as it uses root path
+		if (lang === defaultLang) continue;
+		
+		// Check if pathname matches language home page
+		if (pathsEqual(pathname, url(`/${lang}/`))) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+const isHomePage = isHomePageCheck(Astro.url.pathname);
 
 // Determine which banner to use
 const currentBanner = banner || siteConfig.banner.src;
@@ -104,7 +128,7 @@ const mainPanelTop = siteConfig.banner.enable
 <div class="absolute w-full z-30 pointer-events-none" style={`top: ${mainPanelTop}`}>
     <!-- The pointer-events-none here prevent blocking the click event of the TOC -->
     <div class="relative max-w-[var(--page-width)] mx-auto pointer-events-auto">
-        <div id="main-grid" class="transition duration-700 w-full left-0 right-0 grid grid-cols-[17.5rem_auto] grid-rows-[auto_1fr_auto] lg:grid-rows-[auto]
+        <div id="main-grid" class="transition duration-700 w-full left-0 right-0 grid grid-cols-[17.5rem_auto] grid-rows-[auto_1fr_auto] lg:grid-rows-[auto] 2xl:grid-cols-[17.5rem_minmax(0,1fr)]
     mx-auto gap-4 px-0 md:px-4"
         >
             <!-- Banner image credit -->
@@ -121,11 +145,11 @@ const mainPanelTop = siteConfig.banner.enable
             </a>}
 
 
-            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem] onload-animation" headings={headings}></SideBar>
+            <SideBar class="mb-4 row-start-2 row-end-3 col-span-2 lg:row-start-1 lg:row-end-2 lg:col-span-1 lg:max-w-[17.5rem]" headings={headings} lang={lang}></SideBar>
 
-            <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 overflow-hidden">
+            <main id="swup-container" class="transition-swup-fade col-span-2 lg:col-span-1 min-w-0">
                 <!-- Page data for dynamic banner updates -->
-                <script id="page-banner-data" type="application/json" set:html={JSON.stringify({
+                <script is:inline id="page-banner-data" type="application/json" set:html={JSON.stringify({
                     bannerSrc: currentBanner,
                     isHomePage: isHomePage,
                     isUsingCustomBanner: isUsingCustomBanner,
@@ -137,13 +161,13 @@ const mainPanelTop = siteConfig.banner.enable
                     <!-- make id different from windows.swup global property -->
                     <slot></slot>
                     <div class="footer col-span-2 onload-animation hidden lg:block">
-                        <Footer></Footer>
+                        <Footer lang={lang}></Footer>
                     </div>
                 </div>
             </main>
 
             <div class="footer col-span-2 onload-animation block lg:hidden">
-                <Footer></Footer>
+                <Footer lang={lang}></Footer>
             </div>
         </div>
 

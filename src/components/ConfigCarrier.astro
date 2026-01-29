@@ -1,7 +1,11 @@
 ---
+import { profileConfig, siteConfig } from "../config";
 
-import { siteConfig } from "../config";
+// Note: profileConfig is now a multilingual object (Record<string, ProfileConfig>)
+// Components should use getProfileConfig(lang) from profile-utils.ts to get the correct language version
 ---
 
-<div id="config-carrier" data-hue={siteConfig.themeColor.hue}>
-</div>
+<script is:inline define:vars={{ profileConfig, siteConfig }}>
+  window.profileConfig = profileConfig;
+  window.siteConfig = siteConfig;
+</script>

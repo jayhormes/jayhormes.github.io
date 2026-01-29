@@ -1,0 +1,211 @@
+---
+import { getSupportedLanguages } from "../../config";
+import { siteConfig } from "../../config";
+import { getGalleryConfig } from "../../utils/gallery-utils";
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSortedPostsList } from "../../utils/content-utils";
+import { getSiteDefaultLanguage } from "../../utils/site-language-utils";
+import ImageWrapper from "../../components/misc/ImageWrapper.astro";
+
+export async function getStaticPaths() {
+    const supportedLanguages = getSupportedLanguages();
+    const defaultLang = getSiteDefaultLanguage();
+    
+    return Object.keys(supportedLanguages)
+        .filter(lang => lang !== defaultLang) // Exclude default language because it uses the default route
+        .map(lang => ({
+            params: { lang }
+        }));
+}
+
+const { lang } = Astro.params;
+const currentLang = lang || getSiteDefaultLanguage();
+
+const sortedPostsList = await getSortedPostsList(lang);
+const galleryConfig = getGalleryConfig(currentLang);
+const galleryCollections = galleryConfig.collections;
+
+// Filter posts for each collection
+const collectionsWithPosts = galleryCollections.map((collection) => {
+	const filteredPosts = sortedPostsList.filter((post) =>
+		post.data.tags?.some((tag) =>
+			collection.tags.some(
+				(collectionTag) => tag.toLowerCase() === collectionTag.toLowerCase(),
+			),
+		),
+	);
+
+	// Sort posts from oldest to newest (reverse the original sort)
+	const sortedFilteredPosts = filteredPosts.sort((a, b) => {
+		const dateA = new Date(a.data.published);
+		const dateB = new Date(b.data.published);
+		return dateA < dateB ? -1 : 1; // Oldest first
+	});
+
+	return {
+		...collection,
+		posts: sortedFilteredPosts,
+	};
+});
+
+function formatDate(date: Date) {
+	return date.toLocaleDateString("en-US", {
+		year: "numeric",
+		month: "short",
+		day: "numeric",
+	});
+}
+
+function getPostUrl(slug: string) {
+	return `/posts/${slug}/`;
+}
+
+const title = i18n(I18nKey.gallery, currentLang);
+---
+
+<MainGridLayout title={title} lang={currentLang} banner={siteConfig.pages?.gallery?.src}>
+    <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+        <div class="card-base z-10 px-9 py-6 relative w-full">
+            <div class="mb-6">
+                <h1 class="text-3xl font-bold mb-4 text-neutral-900 dark:text-neutral-100">{title}</h1>
+            </div>
+
+            <!-- Collections -->
+            {collectionsWithPosts.map((collection) => (
+                <div class="mb-8">
+                    <!-- Collection Header -->
+                    <div class="mb-6 p-4 bg-[var(--card-bg)] rounded-lg border border-[var(--line-divider)]">
+                        <h2 class="text-xl font-semibold mb-2 text-neutral-900 dark:text-neutral-100">{collection.name}</h2>
+                        {collection.description && (
+                            <p class="text-neutral-600 dark:text-neutral-400 mb-2">{collection.description}</p>
+                        )}
+                        <div class="flex flex-wrap gap-2 mb-2">
+                            {collection.tags.map(tag => (
+                                <span class="px-2 py-1 text-xs bg-[var(--primary)] text-white rounded">
+                                    #{tag}
+                                </span>
+                            ))}
+                        </div>
+                        <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                            {i18n(I18nKey.galleryFoundPosts, currentLang).replace('{count}', String(collection.posts.length))}
+                        </p>
+                    </div>
+
+                    <!-- Posts Display -->
+                    {collection.posts.length > 0 ? (
+                        collection.displayMode === 'table' ? (
+                            <!-- Table View -->
+                            <div class="overflow-x-auto">
+                                <table class="w-full border-collapse">
+                                    <thead>
+                                        <tr class="border-b border-[var(--line-divider)]">
+                                            <th class="text-left py-3 px-4 font-semibold text-neutral-900 dark:text-neutral-100">Cover</th>
+                                            <th class="text-left py-3 px-4 font-semibold text-neutral-900 dark:text-neutral-100">Title</th>
+                                            <th class="text-left py-3 px-4 font-semibold text-neutral-900 dark:text-neutral-100">Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        {collection.posts.map(post => (
+                                            <tr 
+                                                class="group border-b border-[var(--line-divider)] hover:bg-[var(--btn-plain-bg-hover)] transition-colors duration-200 cursor-pointer hover:border-[var(--primary)] hover:border-opacity-30"
+                                                onclick={`window.location.href='${getPostUrl(post.slug)}'`}
+                                                role="button"
+                                                tabindex="0"
+                                                onkeydown={`if(event.key==='Enter'||event.key===' '){window.location.href='${getPostUrl(post.slug)}'}`}
+                                                aria-label={`View post: ${post.data.title}`}
+                                            >
+                                                <td class="py-3 px-4">
+                                                    {post.data.image ? (
+                                                        <img 
+                                                            src={post.data.image} 
+                                                            alt={post.data.title}
+                                                            class="w-16 h-16 object-cover rounded-lg"
+                                                        />
+                                                    ) : (
+                                                        <div class="w-16 h-16 bg-[var(--line-divider)] rounded-lg flex items-center justify-center transition-colors duration-200 group-hover:bg-[var(--primary)] group-hover:bg-opacity-20">
+                                                            <span class="text-xs text-neutral-500 dark:text-neutral-400 group-hover:text-[var(--primary)] transition-colors duration-200">No Image</span>
+                                                        </div>
+                                                    )}
+                                                </td>
+                                                <td class="py-3 px-4">
+                                                    <h3 class="font-medium text-neutral-900 dark:text-neutral-100 transition-colors duration-200 group-hover:text-[var(--primary)]">
+                                                        {post.data.title}
+                                                    </h3>
+                                                    {post.data.description && (
+                                                        <p class="text-sm text-neutral-600 dark:text-neutral-400 mt-1 transition-colors duration-200 group-hover:text-neutral-700 dark:group-hover:text-neutral-300">
+                                                            {post.data.description}
+                                                        </p>
+                                                    )}
+                                                </td>
+                                                <td class="py-3 px-4 text-sm text-neutral-500 dark:text-neutral-400 transition-colors duration-200 group-hover:text-[var(--primary)]">
+                                                    {formatDate(post.data.published)}
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        ) : (
+                            <!-- Grid View -->
+                            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                                {collection.posts.map(post => (
+                                    <a 
+                                        href={getPostUrl(post.slug)} 
+                                        class="group bg-[var(--card-bg)] rounded-lg border border-[var(--line-divider)] overflow-hidden hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30 transition-all duration-300 ease-in-out hover:scale-105 hover:border-[var(--primary)] hover:border-opacity-50 block"
+                                        aria-label={post.data.title}
+                                    >
+                                        {post.data.image ? (
+                                            <img 
+                                                src={post.data.image} 
+                                                alt={post.data.title}
+                                                class="w-full h-48 object-cover transition-all duration-300 group-hover:scale-110"
+                                            />
+                                        ) : (
+                                            <div class="w-full h-48 bg-[var(--line-divider)] flex items-center justify-center transition-all duration-300 group-hover:bg-[var(--primary)] group-hover:bg-opacity-20">
+                                                <span class="text-neutral-500 dark:text-neutral-400 transition-all duration-300 group-hover:text-[var(--primary)]">No Image</span>
+                                            </div>
+                                        )}
+                                        <div class="p-4">
+                                            <h3 class="font-semibold mb-2 text-neutral-900 dark:text-neutral-100 transition-all duration-300 group-hover:text-[var(--primary)]">
+                                                {post.data.title}
+                                            </h3>
+                                            {post.data.description && (
+                                                <p class="text-sm text-neutral-600 dark:text-neutral-400 mb-3 transition-all duration-300 group-hover:text-neutral-700 dark:group-hover:text-neutral-300">
+                                                    {post.data.description}
+                                                </p>
+                                            )}
+                                            <div class="flex justify-between items-center text-sm">
+                                                <span class="text-neutral-500 dark:text-neutral-400 transition-all duration-300 group-hover:text-[var(--primary)]">
+                                                    {formatDate(post.data.published)}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </a>
+                                ))}
+                            </div>
+                        )
+                    ) : (
+                        <div class="text-center py-12">
+                            <p class="text-neutral-600 dark:text-neutral-400 mb-2">
+                                {i18n(I18nKey.galleryNoPostsFound, currentLang)}
+                            </p>
+                            <p class="text-sm text-neutral-500 dark:text-neutral-400">
+                                {i18n(I18nKey.galleryTryAddingTags, currentLang).replace('{tags}', collection.tags.join(', '))}
+                            </p>
+                        </div>
+                    )}
+                </div>
+            ))}
+
+            {galleryCollections.length === 0 && (
+                <div class="text-center py-12">
+                    <p class="text-neutral-600 dark:text-neutral-400">
+                        No collections configured.
+                    </p>
+                </div>
+            )}
+        </div>
+    </div>
+</MainGridLayout>

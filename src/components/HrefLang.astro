@@ -1,0 +1,61 @@
+---
+import { getSupportedLanguages, type SupportedLanguage } from "../config";
+import { getLanguageVariations, getLanguageFromPath } from "../utils/language-utils";
+
+const supportedLanguages = getSupportedLanguages();
+
+export interface Props {
+    canonicalUrl: string;
+}
+
+const { canonicalUrl } = Astro.props;
+
+// Get the base URL without the path
+const baseUrl = new URL(canonicalUrl).origin;
+const currentPath = new URL(canonicalUrl).pathname;
+
+// Get language variations for this page
+const languageVariations = getLanguageVariations(currentPath);
+const currentLang = getLanguageFromPath(currentPath);
+
+// Generate hreflang entries
+const hreflangs = Object.entries(supportedLanguages).map(([lang, langInfo]) => {
+    const href = baseUrl + languageVariations[lang as SupportedLanguage];
+    return {
+        lang: langInfo.code,
+        href,
+        isDefault: lang === 'en'
+    };
+});
+
+// Add x-default for English
+const defaultHreflang = hreflangs.find(h => h.isDefault);
+---
+
+<!-- hreflang tags for SEO -->
+{hreflangs.map(({ lang, href }) => (
+    <link rel="alternate" hreflang={lang} href={href} />
+))}
+
+{defaultHreflang && (
+    <link rel="alternate" hreflang="x-default" href={defaultHreflang.href} />
+)}
+
+<!-- Canonical URL -->
+<link rel="canonical" href={canonicalUrl} />
+
+<!-- Language meta tag -->
+<meta name="language" content={supportedLanguages[currentLang].code} />
+
+<!-- Additional language-related meta tags -->
+<meta property="og:locale" content={supportedLanguages[currentLang].code.replace('_', '-')} />
+
+{Object.entries(supportedLanguages)
+    .filter(([lang]) => lang !== currentLang)
+    .map(([lang, langInfo]) => (
+        <meta 
+            property="og:locale:alternate" 
+            content={langInfo.code.replace('_', '-')} 
+        />
+    ))
+}

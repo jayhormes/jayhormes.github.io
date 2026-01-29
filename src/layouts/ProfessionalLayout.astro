@@ -1,0 +1,65 @@
+---
+import type { MarkdownHeading } from "astro";
+import { Icon } from "astro-icon/components";
+import BackToTop from "../components/control/BackToTop.astro";
+import Footer from "../components/Footer.astro";
+import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import Navbar from "../components/Navbar.astro";
+import TypewriterText from "../components/TypewriterText.svelte";
+import TOC from "../components/widget/TOC.astro";
+import { siteConfig } from "../config";
+import {
+	BANNER_HEIGHT,
+	BANNER_HEIGHT_EXTEND,
+	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
+} from "../constants/constants";
+import { pathsEqual, url } from "../utils/url-utils";
+import Layout from "./Layout.astro";
+
+interface Props {
+	title?: string;
+	banner?: string;
+	description?: string;
+	lang?: string;
+	setOGTypeArticle?: boolean;
+	headings?: MarkdownHeading[];
+}
+
+const {
+	title,
+	banner,
+	description,
+	lang,
+	setOGTypeArticle,
+	headings = [],
+} = Astro.props;
+const hasBannerCredit =
+	siteConfig.banner.enable && siteConfig.banner.credit.enable;
+const hasBannerLink = !!siteConfig.banner.credit.url;
+
+// Check if current page is home page
+const isHomePage = pathsEqual(Astro.url.pathname, url("/"));
+
+// Determine which banner to use
+const currentBanner = banner || siteConfig.banner.src;
+const isUsingCustomBanner = banner && banner !== siteConfig.banner.src;
+
+// Only show typewriter effect on home page with default banner
+const showTypewriter =
+	siteConfig.banner.typewriter.enable && isHomePage && !isUsingCustomBanner;
+
+const mainPanelTop = siteConfig.banner.enable
+	? `calc(${BANNER_HEIGHT}vh - ${MAIN_PANEL_OVERLAPS_BANNER_HEIGHT}rem)`
+	: "5.5rem";
+---
+
+<!-- Professional Layout - This layout can be used for About page when professional mode is enabled -->
+<Layout 
+	title={title} 
+	banner={currentBanner} 
+	description={description} 
+	lang={lang} 
+	setOGTypeArticle={setOGTypeArticle}
+>
+	<slot />
+</Layout>

@@ -1,3 +1,9 @@
 .expressive-code .frame {
   @apply !shadow-none;
+  max-width: 100%;
+}
+
+.expressive-code pre {
+  max-width: 100%;
+  overflow-x: auto;
 }

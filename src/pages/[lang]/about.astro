@@ -1,0 +1,72 @@
+---
+import { getSupportedLanguages, siteConfig } from "../../config";
+import { render } from "astro:content";
+import Markdown from "@components/misc/Markdown.astro";
+import ProfileHeader from "@components/widget/ProfileHeader.astro";
+import { getProfileConfig } from "../../utils/profile-utils";
+import { getSpecByLangAndName } from "../../utils/spec-utils";
+import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
+import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getSiteDefaultLanguage } from "../../utils/site-language-utils";
+
+export async function getStaticPaths() {
+    const supportedLanguages = getSupportedLanguages();
+    
+    const defaultLang = getSiteDefaultLanguage();
+    
+    return Object.keys(supportedLanguages)
+        .filter(lang => lang !== defaultLang) // Exclude the default language because it uses the root route
+        .map(lang => ({
+            params: { lang }
+        }));
+}
+
+const { lang } = Astro.params;
+
+const currentLang = lang || getSiteDefaultLanguage();
+
+const aboutPost = await getSpecByLangAndName("about", currentLang);
+
+if (!aboutPost) {
+	throw new Error("About page content not found");
+}
+
+const { Content } = await render(aboutPost);
+
+// Check if professional mode is enabled
+const profileConf = getProfileConfig(currentLang);
+const isProfessionalMode = profileConf.about?.enableProfessionalMode ?? false;
+
+const title = i18n(I18nKey.about, currentLang);
+---
+
+<MainGridLayout title={title} description={title} banner={siteConfig.pages?.about?.src} lang={currentLang}>
+    {isProfessionalMode ? (
+        <!-- Professional Mode Layout - Compact and close to banner -->
+        <div class="flex w-full">
+            <div class="w-full">
+                <!-- Compact Professional Header -->
+                <div class="mb-2">
+                    <ProfileHeader lang={currentLang} />
+                </div>
+                
+                <!-- Content directly below header -->
+                <div class="bg-[var(--card-bg)] rounded-[var(--radius-large)] px-9 py-6">
+                    <Markdown class="mt-0">
+                        <Content />
+                    </Markdown>
+                </div>
+            </div>
+        </div>
+    ) : (
+        <!-- Normal Mode Layout - With card styling -->
+        <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative min-h-32">
+            <div class="card-base z-10 px-9 py-6 relative w-full">
+                <Markdown class="mt-2">
+                    <Content />
+                </Markdown>
+            </div>
+        </div>
+    )}
+</MainGridLayout>

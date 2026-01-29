@@ -5,6 +5,7 @@ export const es: Translation = {
 	[Key.home]: "Inicio",
 	[Key.about]: "Sobre mí",
 	[Key.archive]: "Archivo",
+	[Key.gallery]: "Galería",
 	[Key.projects]: "Proyectos",
 	[Key.search]: "Buscar",
 
@@ -36,4 +37,19 @@ export const es: Translation = {
 	[Key.author]: "Autor",
 	[Key.publishedAt]: "Publicado el",
 	[Key.license]: "Licencia",
+
+	// Language selector
+	[Key.languageSelector]: "Idioma",
+	[Key.english]: "English",
+	[Key.chineseSimplified]: "简体中文",
+	[Key.chineseTraditional]: "繁體中文",
+	[Key.japanese]: "日本語",
+	[Key.korean]: "한국어",
+	[Key.spanish]: "Español",
+	[Key.thai]: "ไทย",
+
+	// Gallery page
+	[Key.galleryFoundPosts]: "Se encontraron {count} publicaciones",
+	[Key.galleryNoPostsFound]: "No se encontraron publicaciones para esta colección.",
+	[Key.galleryTryAddingTags]: "Intenta agregar publicaciones con las etiquetas: {tags}",
 };

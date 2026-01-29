@@ -5,6 +5,7 @@ export const zh_TW: Translation = {
 	[Key.home]: "首頁",
 	[Key.about]: "關於",
 	[Key.archive]: "彙整",
+	[Key.gallery]: "畫廊",
 	[Key.projects]: "專案",
 	[Key.search]: "搜尋",
 
@@ -36,4 +37,19 @@ export const zh_TW: Translation = {
 	[Key.author]: "作者",
 	[Key.publishedAt]: "發佈於",
 	[Key.license]: "許可協議",
+
+	// Language selector
+	[Key.languageSelector]: "語言",
+	[Key.english]: "English",
+	[Key.chineseSimplified]: "简体中文",
+	[Key.chineseTraditional]: "繁體中文",
+	[Key.japanese]: "日本語",
+	[Key.korean]: "한국어",
+	[Key.spanish]: "Español",
+	[Key.thai]: "ไทย",
+
+	// Gallery page
+	[Key.galleryFoundPosts]: "找到 {count} 篇文章",
+	[Key.galleryNoPostsFound]: "此集合沒有找到文章。",
+	[Key.galleryTryAddingTags]: "請嘗試添加包含以下標籤的文章：{tags}",
 };

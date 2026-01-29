@@ -1,0 +1,69 @@
+---
+// This component provides client-side i18n updates for dynamic content
+---
+
+<script>
+import { getLanguageFromPath } from '../utils/language-utils';
+import { getTranslation } from '../i18n/translation';
+
+function updateI18nElements() {
+    // Get current language from URL
+    const currentLang = getLanguageFromPath(window.location.pathname);
+    const translation = getTranslation(currentLang);
+    
+    // Update all elements with data-i18n-key attribute
+    document.querySelectorAll('[data-i18n-key]').forEach((element) => {
+        const key = element.getAttribute('data-i18n-key');
+        if (key && translation[key as keyof typeof translation]) {
+            // Check if element has count data for plural handling
+            const count = element.getAttribute('data-i18n-count');
+            
+            // Update text content, preserving leading/trailing spaces if needed
+            const translatedText = translation[key as keyof typeof translation];
+            
+            // For elements with counts, add a leading space if the original had one
+            if (count) {
+                element.textContent = ' ' + translatedText;
+            } else {
+                element.textContent = translatedText;
+            }
+        }
+    });
+}
+
+// Update on page load
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', updateI18nElements);
+} else {
+    updateI18nElements();
+}
+
+// Update on navigation (for SPA-like behavior)
+// Listen to astro:page-load event if using View Transitions
+document.addEventListener('astro:page-load', updateI18nElements);
+
+// Also handle popstate (browser back/forward)
+window.addEventListener('popstate', () => {
+    setTimeout(updateI18nElements, 100);
+});
+
+// MutationObserver to handle dynamically added content
+const observer = new MutationObserver((mutations) => {
+    let shouldUpdate = false;
+    mutations.forEach((mutation) => {
+        mutation.addedNodes.forEach((node) => {
+            if (node instanceof Element && node.querySelector('[data-i18n-key]')) {
+                shouldUpdate = true;
+            }
+        });
+    });
+    if (shouldUpdate) {
+        updateI18nElements();
+    }
+});
+
+observer.observe(document.body, {
+    childList: true,
+    subtree: true
+});
+</script>

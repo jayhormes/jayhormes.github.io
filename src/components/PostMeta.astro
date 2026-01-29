@@ -23,6 +23,35 @@ const {
 	hideUpdateDate = false,
 } = Astro.props;
 const className = Astro.props.class;
+
+// Generate consistent color for each tag
+const getTagVariant = (
+	tagName: string,
+): "default" | "primary" | "secondary" | "success" | "warning" | "error" => {
+	const variants: (
+		| "primary"
+		| "secondary"
+		| "success"
+		| "warning"
+		| "error"
+	)[] = ["primary", "secondary", "success", "warning", "error"];
+	let hash = 0;
+	for (let i = 0; i < tagName.length; i++) {
+		const char = tagName.charCodeAt(i);
+		hash = (hash << 5) - hash + char;
+		hash = hash & hash;
+	}
+	return variants[Math.abs(hash) % variants.length];
+};
+
+// Prepare tag data with variants
+const tagData = tags
+	? tags.map((tag) => ({
+			name: tag.trim(),
+			variant: getTagVariant(tag.trim()),
+			url: getTagUrl(tag),
+		}))
+	: [];
 ---
 
 <div class:list={["flex flex-wrap text-neutral-500 dark:text-neutral-400 items-center gap-4 gap-x-4 gap-y-2", className]}>
@@ -56,7 +85,7 @@ const className = Astro.props.class;
             <a href={getCategoryUrl(category)} aria-label={`View all posts in the ${category} category`}
                class="link-lg transition text-50 text-sm font-medium
                             hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
-                {category || i18n(I18nKey.uncategorized)}
+                {category || <span data-i18n-key={I18nKey.uncategorized}>{i18n(I18nKey.uncategorized)}</span>}
             </a>
         </div>
     </div>
@@ -67,16 +96,16 @@ const className = Astro.props.class;
         >
             <Icon name="material-symbols:tag-rounded" class="text-xl"></Icon>
         </div>
-        <div class="flex flex-row flex-nowrap items-center">
-            {(tags && tags.length > 0) && tags.map((tag, i) => (
-                <div class:list={[{"hidden": i == 0}, "mx-1.5 text-[var(--meta-divider)] text-sm"]}>/</div>
-                <a href={getTagUrl(tag)} aria-label={`View all posts with the ${tag.trim()} tag`}
-                   class="link-lg transition text-50 text-sm font-medium
-                                hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
-                    {tag.trim()}
+        <div class="flex flex-row flex-wrap items-center gap-1.5 p-1">
+            {tagData && tagData.length > 0 && tagData.map((tagInfo) => (
+                <a href={tagInfo.url} 
+                   aria-label={`View all posts with the ${tagInfo.name} tag`}
+                   class={`notion-tag notion-tag-${tagInfo.variant}`}
+                   style="height: 1.5rem; font-size: 0.75rem; padding: 0.25rem 0.625rem; border-radius: 9999px; display: inline-flex; align-items: center; font-weight: 500; transition: all 0.2s ease-in-out; text-decoration: none;">
+                    <span style="line-height: 1;">{tagInfo.name}</span>
                 </a>
             ))}
-            {!(tags && tags.length > 0) && <div class="transition text-50 text-sm font-medium">{i18n(I18nKey.noTags)}</div>}
+            {!(tagData && tagData.length > 0) && <div class="transition text-50 text-sm font-medium" data-i18n-key={I18nKey.noTags}>{i18n(I18nKey.noTags)}</div>}
         </div>
     </div>
 </div>

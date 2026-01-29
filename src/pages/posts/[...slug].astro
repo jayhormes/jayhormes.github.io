@@ -7,25 +7,52 @@ import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
 import { getDir, getPostUrlBySlug } from "@utils/url-utils";
+import { getProfileConfig } from "@utils/profile-utils";
 import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import PostMetadata from "../../components/PostMeta.astro";
-import { profileConfig, siteConfig } from "../../config";
+import { siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
+import { getPostLanguage } from "@utils/post-language-utils";
 
 export async function getStaticPaths() {
-	const blogEntries = await getSortedPosts();
-	return blogEntries.map((entry) => ({
-		params: { slug: entry.slug },
-		props: { entry },
-	}));
+	// Get all posts without language filter to generate all pages
+	const allPosts = await getSortedPosts();
+	
+	// For each post, get sorted posts in the same language to set correct prev/next
+	const paths = [];
+	for (const entry of allPosts) {
+		const postLang = getPostLanguage(entry.slug, entry.data.lang);
+		const postsInSameLang = await getSortedPosts(postLang);
+		
+		// Find current post in the filtered list and set prev/next
+		const currentIndex = postsInSameLang.findIndex(p => p.slug === entry.slug);
+		if (currentIndex !== -1) {
+			// Set nextSlug/prevSlug based on posts in the same language
+			entry.data.nextSlug = currentIndex > 0 ? postsInSameLang[currentIndex - 1].slug : "";
+			entry.data.nextTitle = currentIndex > 0 ? postsInSameLang[currentIndex - 1].data.title : "";
+			entry.data.prevSlug = currentIndex < postsInSameLang.length - 1 ? postsInSameLang[currentIndex + 1].slug : "";
+			entry.data.prevTitle = currentIndex < postsInSameLang.length - 1 ? postsInSameLang[currentIndex + 1].data.title : "";
+		}
+		
+		paths.push({
+			params: { slug: entry.slug },
+			props: { entry },
+		});
+	}
+	
+	return paths;
 }
 
 const { entry } = Astro.props;
 const { Content, headings } = await entry.render();
 
 const { remarkPluginFrontmatter } = await entry.render();
+
+// Get profile config for the post's language
+const postLang = entry.data.lang;
+const profileConf = getProfileConfig(postLang);
 
 const jsonLd = {
 	"@context": "https://schema.org",
@@ -35,7 +62,7 @@ const jsonLd = {
 	keywords: entry.data.tags,
 	author: {
 		"@type": "Person",
-		name: profileConfig.name,
+		name: profileConf.name,
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
@@ -48,7 +75,7 @@ const jsonLd = {
 <MainGridLayout banner={entry.data.image} title={entry.data.title} description={entry.data.description} lang={entry.data.lang} setOGTypeArticle={true} headings={headings}>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(jsonLd)}></script>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4">
-        <div id="post-container" class:list={["card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full ",
+        <div id="post-container" class:list={["card-base z-10 px-6 md:px-9 pt-6 pb-4 relative w-full overflow-hidden",
             {}
         ]}>
             <!-- word count and reading time -->
@@ -106,7 +133,7 @@ const jsonLd = {
                 <Content />
             </Markdown>
 
-            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} class="mb-6 rounded-xl license-container onload-animation"></License>}
+            {licenseConfig.enable && <License title={entry.data.title} slug={entry.slug} pubDate={entry.data.published} lang={postLang} class="mb-6 rounded-xl license-container onload-animation"></License>}
 
         </div>
     </div>

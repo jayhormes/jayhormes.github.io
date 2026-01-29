@@ -1,0 +1,110 @@
+---
+import { Icon } from "astro-icon/components";
+import { getProfileConfig } from "../../utils/profile-utils";
+import ImageWrapper from "../misc/ImageWrapper.astro";
+
+interface Props {
+	lang?: string;
+}
+
+const { lang } = Astro.props;
+const config = getProfileConfig(lang);
+const aboutConfig = config.about || {};
+
+// Use professional avatar if available, otherwise fallback to regular avatar
+const avatarSrc = aboutConfig.avatar || config.avatar || "";
+const professionalTitle = aboutConfig.title || config.name;
+const professionalSubtitle = aboutConfig.subtitle || config.bio;
+const isProfessionalMode = aboutConfig.enableProfessionalMode ?? false;
+
+// Badge configuration
+const badgeConfig = aboutConfig.badge || {};
+const showBadge = badgeConfig.enable ?? true; // Default to show badge
+const badgeIcon = badgeConfig.icon || "fa6-solid:briefcase"; // Default icon
+---
+
+<!-- Professional Resume Style Header -->
+<div class="card-base relative overflow-hidden rounded-t-[var(--radius-large)] rounded-b-none">
+    <!-- Background Pattern -->
+    <div class="absolute inset-0 opacity-5">
+      <svg class="w-full h-full" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <pattern id="grid" width="10" height="10" patternUnits="userSpaceOnUse">
+            <path d="M 10 0 L 0 0 0 10" fill="none" stroke="currentColor" stroke-width="0.5"/>
+          </pattern>
+        </defs>
+        <rect width="100%" height="100%" fill="url(#grid)" />
+      </svg>
+    </div>
+    
+    <!-- Content -->
+    <div class={`relative z-10 ${isProfessionalMode ? 'px-8 py-6' : 'px-8 py-6'}`}>
+      <div class={`flex ${isProfessionalMode ? 'flex-row items-center gap-6' : 'flex-col lg:flex-row items-center lg:items-start gap-8'}`}>
+        <!-- Professional Avatar -->
+        <div class="flex-shrink-0 relative group">
+          <div class={`${isProfessionalMode ? 'w-36 h-36 lg:w-44 lg:h-44' : 'w-32 h-32 lg:w-40 lg:h-40'} rounded-full overflow-hidden border-4 border-[var(--primary)] shadow-2xl 
+                      transform transition-all duration-300 group-hover:scale-105 group-hover:shadow-3xl`}>
+            <ImageWrapper 
+              src={avatarSrc} 
+              alt="Professional Profile Image" 
+              class="w-full h-full object-cover"
+            />
+          </div>
+          <!-- Professional Badge -->
+          {showBadge && (
+            <div class={`absolute -bottom-2 -right-2 ${isProfessionalMode ? 'w-12 h-12' : 'w-8 h-8'} bg-[var(--primary)] rounded-full 
+                        flex items-center justify-center shadow-lg transform transition-all duration-300 
+                        group-hover:scale-110`}>
+              <Icon name={badgeIcon} class={`text-white ${isProfessionalMode ? 'text-base' : 'text-sm'}`} />
+            </div>
+          )}
+        </div>
+        
+        <!-- Professional Info -->
+        <div class="flex-1 text-center lg:text-left space-y-6">
+          <!-- Name/Title -->
+          <div>
+            <h1 class={`${isProfessionalMode ? 'text-4xl lg:text-5xl' : 'text-3xl lg:text-4xl'} font-bold text-neutral-900 dark:text-neutral-100 mb-3 
+                       tracking-tight leading-tight`}>
+              {professionalTitle}
+            </h1>
+            <div class={`${isProfessionalMode ? 'w-20 h-1.5' : 'w-16 h-1'} bg-gradient-to-r from-[var(--primary)] to-[var(--primary)]/60 
+                        mx-auto lg:mx-0 rounded-full`}></div>
+          </div>
+          
+          <!-- Professional Subtitle/Bio -->
+          {professionalSubtitle && (
+            <p class={`${isProfessionalMode ? 'text-xl' : 'text-lg'} text-neutral-600 dark:text-neutral-300 leading-relaxed max-w-3xl`}>
+              {professionalSubtitle}
+            </p>
+          )}
+          
+          <!-- Professional Links -->
+          {config.links.length > 0 && (
+            <div class={`flex flex-wrap gap-4 justify-center lg:justify-start ${isProfessionalMode ? 'pt-4' : 'pt-2'}`}>
+              {config.links.map(link => (
+                <a 
+                  href={link.url} 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  aria-label={link.name}
+                  class={`group inline-flex items-center gap-3 ${isProfessionalMode ? 'px-6 py-3' : 'px-4 py-2'} 
+                         bg-neutral-100 dark:bg-neutral-800 hover:bg-[var(--primary)] 
+                         rounded-full transition-all duration-300 
+                         hover:text-white hover:shadow-lg hover:scale-105
+                         text-neutral-700 dark:text-neutral-200`}
+                >
+                  <Icon name={link.icon} class={`${isProfessionalMode ? 'text-base' : 'text-sm'} transition-transform group-hover:scale-110`} />
+                  <span class={`${isProfessionalMode ? 'text-base' : 'text-sm'} font-medium`}>{link.name}</span>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
+    
+    <!-- Decorative Elements -->
+    <div class={`absolute top-0 right-0 ${isProfessionalMode ? 'w-40 h-40' : 'w-32 h-32'} bg-gradient-to-bl from-[var(--primary)]/10 to-transparent rounded-bl-full`}></div>
+    <div class={`absolute bottom-0 left-0 ${isProfessionalMode ? 'w-32 h-32' : 'w-24 h-24'} bg-gradient-to-tr from-[var(--primary)]/10 to-transparent rounded-tr-full`}></div>
+</div>

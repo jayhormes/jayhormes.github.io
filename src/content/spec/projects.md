@@ -1,72 +1,74 @@
+---
+lang: en
+---
+
 # Projects
 
-這裡展示我目前正在進行的一些專案計畫，包括已完成的作品和正在開發中的項目。
+Here are some of my current and past projects, including completed works and ongoing developments.
 
-## 開發中專案
+## 🚧 In Development
 
-### 🚧 Blog Theme Enhancement
-基於 Astro + Fuwari 主題的個人部落格優化專案
-- **技術棧**: Astro, TypeScript, Tailwind CSS
-- **狀態**: 開發中
-- **描述**: 對現有部落格主題進行客製化，增加新功能和改善使用者體驗
+### Blog Theme Enhancement
+Personal blog optimization project based on Astro + Fuwari theme
+- **Tech Stack**: Astro, TypeScript, Tailwind CSS
+- **Status**: In Development
+- **Description**: Customizing existing blog theme, adding new features and improving user experience
 
 ### 💻 Web Development Tools
-前端開發工具集合
-- **技術棧**: Vue.js, Node.js
-- **狀態**: 規劃中
-- **描述**: 開發一系列實用的前端開發工具，提高開發效率
+Frontend development toolset
+- **Tech Stack**: Vue.js, Node.js
+- **Status**: Planning
+- **Description**: Developing a series of practical frontend development tools to improve development efficiency
 
-## 已完成專案
+## ✅ Completed Projects
 
 ### 📝 Portfolio Website
-個人作品集網站
-- **技術棧**: Next.js, React, CSS Modules
-- **狀態**: 已完成
-- **描述**: 展示個人技能和作品的響應式網站
-- **特色**: 
-  - 響應式設計
-  - 深色/淺色主題切換
-  - 多語言支援
+Personal portfolio website
+- **Tech Stack**: Next.js, React, CSS Modules
+- **Status**: Completed
+- **Description**: Responsive website showcasing personal skills and works
+- **Features**: 
+  - Responsive design
+  - Dark/Light theme toggle
+  - Multi-language support
 
 ### 🎨 UI Component Library
-自定義 UI 組件庫
-- **技術棧**: React, TypeScript, Storybook
-- **狀態**: 維護中
-- **描述**: 可重複使用的 React 組件集合
-- **特色**:
-  - TypeScript 支援
-  - 完整的文件說明
-  - 自動化測試
+Custom UI component library
+- **Tech Stack**: React, TypeScript, Storybook
+- **Status**: Maintained
+- **Description**: Collection of reusable React components
+- **Features**:
+  - TypeScript support
+  - Complete documentation
+  - Automated testing
 
-## 開源貢獻
+## 🌟 Open Source Contributions
 
-### 🌟 社群參與
-- 參與多個開源專案的討論和問題回報
-- 為文件翻譯貢獻內容
-- 協助新手解決技術問題
+### Community Participation
+- Participating in discussions and issue reporting for multiple open-source projects
+- Contributing content for documentation translation
+- Helping newcomers solve technical problems
 
-## 技術技能
+## 💡 Technical Skills
 
-### 前端開發
-- **語言**: JavaScript, TypeScript, HTML, CSS
-- **框架**: React, Vue.js, Astro, Next.js
-- **工具**: Webpack, Vite, ESLint, Prettier
+### Frontend Development
+- React, Vue.js, Astro
+- TypeScript, JavaScript
+- Tailwind CSS, CSS-in-JS
+- Responsive Design, Accessibility
 
-### 後端開發
-- **語言**: Node.js, Python
-- **資料庫**: MongoDB, PostgreSQL
-- **雲端服務**: Vercel, Netlify
+### Backend Development
+- Node.js, Express
+- RESTful API design
+- Database design (SQL/NoSQL)
+- Authentication & Authorization
 
-### 設計工具
-- **UI/UX**: Figma, Adobe XD
-- **圖形設計**: Photoshop, Illustrator
+### Tools & DevOps
+- Git version control
+- Docker containerization
+- CI/CD automation
+- Cloud services (AWS, Vercel)
 
 ---
 
-如果你對任何專案感興趣或想要合作，歡迎通過以下方式聯繫我：
-
-- 📧 Email: [your-email@example.com](mailto:your-email@example.com)
-- 💼 GitHub: [your-github-profile](https://github.com/your-username)
-- 🔗 LinkedIn: [your-linkedin-profile](https://linkedin.com/in/your-profile)
-
-> 💡 **提示**: 這個頁面會定期更新，展示最新的專案進展和技術學習成果。
+> Feel free to check out my [GitHub](https://github.com) for more projects and contributions!
