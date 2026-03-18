@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>Fuwari</title><description>Demo Site</description><link>https://fuwari.vercel.app/</link><language>en</language><item><title>多言語ブログ投稿の例</title><link>https://fuwari.vercel.app/posts/multilingual-blog-post-exampleja/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/multilingual-blog-post-exampleja/</guid><description>多言語投稿機能のデモンストレーション</description><pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;多言語ブログ投稿の例&lt;/h1&gt;
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JayHormes</title><description>Code, Create, Immerse</description><link>https://fuwari.vercel.app/</link><language>en</language><item><title>多言語ブログ投稿の例</title><link>https://fuwari.vercel.app/posts/multilingual-blog-post-exampleja/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/multilingual-blog-post-exampleja/</guid><description>多言語投稿機能のデモンストレーション</description><pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;多言語ブログ投稿の例&lt;/h1&gt;
 &lt;p&gt;ブログシステムの多言語機能を実証するサンプル投稿へようこそ！&lt;/p&gt;
 &lt;h2&gt;特徴&lt;/h2&gt;
 &lt;p&gt;このブログ投稿は複数の言語で利用できます：&lt;/p&gt;
@@ -29,37 +29,6 @@ function getPostLanguage(slug) {
 ✅ 簡単なコンテンツ管理&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：これはデモ投稿です。上記の言語スイッチャーを使用して、この投稿を他の言語で表示してください！&lt;/p&gt;
-</content:encoded></item><item><title>Multilingual Blog Post Example</title><link>https://fuwari.vercel.app/posts/multilingual-blog-post-example/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/multilingual-blog-post-example/</guid><description>This is a demonstration of the multilingual post feature</description><pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Multilingual Blog Post Example&lt;/h1&gt;
-&lt;p&gt;Welcome to this example post demonstrating the multilingual capabilities of our blog system!&lt;/p&gt;
-&lt;h2&gt;Features&lt;/h2&gt;
-&lt;p&gt;This blog post is available in multiple languages:&lt;/p&gt;
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;English&lt;/strong&gt; (this version)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;繁體中文&lt;/strong&gt; (Traditional Chinese)&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;日本語&lt;/strong&gt; (Japanese)&lt;/li&gt;
-&lt;/ul&gt;
-&lt;h2&gt;How It Works&lt;/h2&gt;
-&lt;p&gt;The multilingual system uses:&lt;/p&gt;
-&lt;ol&gt;
-&lt;li&gt;&lt;strong&gt;File naming convention&lt;/strong&gt;: &lt;code&gt;slug.lang.md&lt;/code&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Automatic language detection&lt;/strong&gt; from filename&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Fallback mechanism&lt;/strong&gt; to default language&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Language switcher&lt;/strong&gt; component&lt;/li&gt;
-&lt;/ol&gt;
-&lt;h2&gt;Example Code&lt;/h2&gt;
-&lt;pre&gt;&lt;code&gt;// Language detection example
-function getPostLanguage(slug) {
-  const parts = slug.split(&apos;.&apos;);
-  return parts.length &amp;gt; 1 ? parts[parts.length - 1] : &apos;default&apos;;
-}
-&lt;/code&gt;&lt;/pre&gt;
-&lt;h2&gt;Benefits&lt;/h2&gt;
-&lt;p&gt;✅ Better user experience&lt;br /&gt;
-✅ SEO friendly&lt;br /&gt;
-✅ Respects user&apos;s language preference&lt;br /&gt;
-✅ Easy content management&lt;/p&gt;
-&lt;hr /&gt;
-&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: This is a demo post. Use the language switcher above to view this post in other languages!&lt;/p&gt;
 </content:encoded></item><item><title>多語系部落格文章範例</title><link>https://fuwari.vercel.app/posts/multilingual-blog-post-examplezh-tw/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/multilingual-blog-post-examplezh-tw/</guid><description>這是多語系文章功能的展示範例</description><pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;多語系部落格文章範例&lt;/h1&gt;
 &lt;p&gt;歡迎來到這個展示多語系功能的範例文章！&lt;/p&gt;
 &lt;h2&gt;功能特色&lt;/h2&gt;
@@ -91,6 +60,37 @@ function getPostLanguage(slug) {
 ✅ 易於內容管理&lt;/p&gt;
 &lt;hr /&gt;
 &lt;p&gt;&lt;strong&gt;注意&lt;/strong&gt;：這是一個示範文章。使用上方的語言切換器來查看此文章的其他語言版本！&lt;/p&gt;
+</content:encoded></item><item><title>Multilingual Blog Post Example</title><link>https://fuwari.vercel.app/posts/multilingual-blog-post-example/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/multilingual-blog-post-example/</guid><description>This is a demonstration of the multilingual post feature</description><pubDate>Thu, 29 Jan 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h1&gt;Multilingual Blog Post Example&lt;/h1&gt;
+&lt;p&gt;Welcome to this example post demonstrating the multilingual capabilities of our blog system!&lt;/p&gt;
+&lt;h2&gt;Features&lt;/h2&gt;
+&lt;p&gt;This blog post is available in multiple languages:&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;&lt;strong&gt;English&lt;/strong&gt; (this version)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;繁體中文&lt;/strong&gt; (Traditional Chinese)&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;日本語&lt;/strong&gt; (Japanese)&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;How It Works&lt;/h2&gt;
+&lt;p&gt;The multilingual system uses:&lt;/p&gt;
+&lt;ol&gt;
+&lt;li&gt;&lt;strong&gt;File naming convention&lt;/strong&gt;: &lt;code&gt;slug.lang.md&lt;/code&gt;&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Automatic language detection&lt;/strong&gt; from filename&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Fallback mechanism&lt;/strong&gt; to default language&lt;/li&gt;
+&lt;li&gt;&lt;strong&gt;Language switcher&lt;/strong&gt; component&lt;/li&gt;
+&lt;/ol&gt;
+&lt;h2&gt;Example Code&lt;/h2&gt;
+&lt;pre&gt;&lt;code&gt;// Language detection example
+function getPostLanguage(slug) {
+  const parts = slug.split(&apos;.&apos;);
+  return parts.length &amp;gt; 1 ? parts[parts.length - 1] : &apos;default&apos;;
+}
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Benefits&lt;/h2&gt;
+&lt;p&gt;✅ Better user experience&lt;br /&gt;
+✅ SEO friendly&lt;br /&gt;
+✅ Respects user&apos;s language preference&lt;br /&gt;
+✅ Easy content management&lt;/p&gt;
+&lt;hr /&gt;
+&lt;p&gt;&lt;strong&gt;Note&lt;/strong&gt;: This is a demo post. Use the language switcher above to view this post in other languages!&lt;/p&gt;
 </content:encoded></item><item><title>Markdown Extended Features</title><link>https://fuwari.vercel.app/posts/markdown-extended/</link><guid isPermaLink="true">https://fuwari.vercel.app/posts/markdown-extended/</guid><description>Read more about Markdown features in Fuwari</description><pubDate>Wed, 01 May 2024 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;GitHub Repository Cards&lt;/h2&gt;
 &lt;p&gt;You can add dynamic cards that link to GitHub repositories, on page load, the repository information is pulled from the GitHub API.&lt;/p&gt;
 &lt;p&gt;::github{repo=&quot;Fabrizz/MMM-OnSpotify&quot;}&lt;/p&gt;
