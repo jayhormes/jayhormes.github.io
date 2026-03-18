@@ -13,7 +13,7 @@ export { galleryConfig } from "./config/gallery";
 // All available languages in the i18n system
 export const availableLanguages = {
 	en: { code: "en", name: "English", flag: "🇺🇸" },
-	"zh-tw": { code: "zh_TW", name: "繁體中文", flag: "🇹🇼" },
+	"zh-tw": { code: "zh_TW", name: "正體中文", flag: "🇹🇼" },
 	"zh-cn": { code: "zh_CN", name: "简体中文", flag: "🇨🇳" },
 	ja: { code: "ja", name: "日本語", flag: "🇯🇵" },
 	ko: { code: "ko", name: "한국어", flag: "🇰🇷" },
@@ -31,8 +31,8 @@ export const multilingualSettings = {
 	// Behavior for posts without lang field in frontmatter
 	// 'default': Use siteConfig.lang as default (recommended for backward compatibility)
 	// 'strict': Require lang field in all posts (shows warning in dev mode)
-	legacyBehavior: 'default' as 'default' | 'strict',
-	
+	legacyBehavior: "default" as "default" | "strict",
+
 	// Show warning in console for posts without lang field
 	warnMissingLang: true,
 };
@@ -50,16 +50,16 @@ export const getSupportedLanguages = () => {
 export type SupportedLanguage = (typeof enabledLanguages)[number];
 
 export const siteConfig: SiteConfig = {
-	title: "Fuwari",
-	subtitle: "Demo Site",
+	title: "JayHormes",
+	subtitle: "Code, Create, Immerse",
 	lang: "en", // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko', 'es', 'th'
 	themeColor: {
-		hue: 250, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
+		hue: 0, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: false, // Hide the theme color picker for visitors
 	},
 	banner: {
 		enable: true,
-		src: "/demo-banner.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
+		src: "/site-banner.png", // Relative to the /src directory. Relative to the /public directory if it starts with '/'
 		position: "center", // Equivalent to object-position, only supports 'top', 'center', 'bottom'. 'center' by default
 		credit: {
 			enable: false, // Display the credit text of the banner image
@@ -69,10 +69,10 @@ export const siteConfig: SiteConfig = {
 		typewriter: {
 			enable: true,
 			texts: [
-				"Lorem ipsum dolor sit amet, consectetur adipiscing elit",
-				"Lorem Ipsum",
-				"dolor sit amet",
-				"consectetur adipiscing elit",
+				"Stay curious. Keep building.",
+				"Make something people want.",
+				'console.log("Hello, World!").',
+				"404: Sleep not found.",
 			],
 			speed: 100, // Typing speed in milliseconds
 			delay: 2000, // Delay between texts in milliseconds
@@ -80,25 +80,25 @@ export const siteConfig: SiteConfig = {
 			fontFamily: "'Fira Code', 'JetBrains Mono', Consolas, monospace",
 			fontWeight: "700", // (100-900 or normal, bold)
 			color: "#ffffffff",
-			cursorColor: "#000000",
+			cursorColor: "#ffffffff",
 			textAlign: "center",
 		},
 	},
 	pages: {
 		archive: {
-			src: "/demo-banner.png", // Custom banner for Archive page - you can change this to any image path
+			src: "/site-banner-light.png", // Custom banner for Archive page - you can change this to any image path
 			position: "center",
 		},
 		gallery: {
-			src: "/guide-cover.jpeg", // Custom banner for Gallery page - you can change this to any image path
+			src: "/site-banner-light.png", // Custom banner for Gallery page - you can change this to any image path
 			position: "center",
 		},
 		projects: {
-			src: "/demo-banner.png", // Custom banner for Projects page - you can change this to any image path
+			src: "/site-banner-light.png", // Custom banner for Projects page - you can change this to any image path
 			position: "center",
 		},
 		about: {
-			src: "/guide-cover.jpeg", // Custom banner for About page - you can change this to any image path
+			src: "/site-banner-light.png", // Custom banner for About page - you can change this to any image path
 			position: "center",
 		},
 	},
@@ -125,7 +125,7 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.About,
 		{
 			name: "GitHub",
-			url: "https://github.com/saicaca/fuwari", // Internal links should not include the base path, as it is automatically added
+			url: "https://github.com/jayhormes", // Internal links should not include the base path, as it is automatically added
 			external: true, // Show an external link icon and will open in a new tab
 		},
 	],
@@ -137,30 +137,25 @@ export const navBarConfig: NavBarConfig = {
 export const profileConfig: Record<string, ProfileConfig> = {
 	// English (default)
 	en: {
-		avatar: "assets/images/demo-avatar.png",
-		name: "Lorem Ipsum",
-		bio: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
+		avatar: "assets/images/avatar.png",
+		name: "Jay Hormes",
+		bio: "Code, Create, Immerse",
 		links: [
 			{
-				name: "Twitter",
-				icon: "fa6-brands:twitter",
+				name: "X (Twitter)",
+				icon: "fa6-brands:x-twitter",
 				url: "https://twitter.com",
-			},
-			{
-				name: "Steam",
-				icon: "fa6-brands:steam",
-				url: "https://store.steampowered.com",
 			},
 			{
 				name: "GitHub",
 				icon: "fa6-brands:github",
-				url: "https://github.com/saicaca/fuwari",
+				url: "https://github.com/jayhormes",
 			},
 		],
 		about: {
-			avatar: "assets/images/demo-avatar.png",
-			title: "Lorem Ipsum",
-			subtitle: "Full Stack Developer & UI/UX Enthusiast",
+			avatar: "assets/images/avatar.png",
+			title: "Jay Hormes",
+			subtitle: "Code, Create, Immerse",
 			enableProfessionalMode: true,
 			badge: {
 				enable: true,
@@ -170,30 +165,25 @@ export const profileConfig: Record<string, ProfileConfig> = {
 	},
 	// Traditional Chinese
 	"zh-tw": {
-		avatar: "assets/images/demo-avatar.png",
-		name: "示範帳號",
-		bio: "這是一個示範部落格，展示多語言功能。",
+		avatar: "assets/images/avatar.png",
+		name: "Jay Hormes",
+		bio: "Code, Create, Immerse",
 		links: [
 			{
-				name: "推特",
-				icon: "fa6-brands:twitter",
+				name: "X (Twitter)",
+				icon: "fa6-brands:x-twitter",
 				url: "https://twitter.com",
-			},
-			{
-				name: "Steam",
-				icon: "fa6-brands:steam",
-				url: "https://store.steampowered.com",
 			},
 			{
 				name: "GitHub",
 				icon: "fa6-brands:github",
-				url: "https://github.com/saicaca/fuwari",
+				url: "https://github.com/jayhormes",
 			},
 		],
 		about: {
-			avatar: "assets/images/demo-avatar.png",
-			title: "示範帳號",
-			subtitle: "全端工程師與 UI/UX 愛好者",
+			avatar: "assets/images/avatar.png",
+			title: "Jay Hormes",
+			subtitle: "Code, Create, Immerse",
 			enableProfessionalMode: true,
 			badge: {
 				enable: true,
@@ -203,30 +193,25 @@ export const profileConfig: Record<string, ProfileConfig> = {
 	},
 	// Japanese
 	ja: {
-		avatar: "assets/images/demo-avatar.png",
-		name: "デモアカウント",
-		bio: "これは多言語機能を紹介するデモブログです。",
+		avatar: "assets/images/avatar.png",
+		name: "Jay Hormes",
+		bio: "Code, Create, Immerse",
 		links: [
 			{
-				name: "ツイッター",
-				icon: "fa6-brands:twitter",
+				name: "X (ツイッター)",
+				icon: "fa6-brands:x-twitter",
 				url: "https://twitter.com",
-			},
-			{
-				name: "Steam",
-				icon: "fa6-brands:steam",
-				url: "https://store.steampowered.com",
 			},
 			{
 				name: "GitHub",
 				icon: "fa6-brands:github",
-				url: "https://github.com/saicaca/fuwari",
+				url: "https://github.com/jayhormes",
 			},
 		],
 		about: {
-			avatar: "assets/images/demo-avatar.png",
-			title: "デモアカウント",
-			subtitle: "フルスタック開発者 & UI/UX愛好家",
+			avatar: "assets/images/avatar.png",
+			title: "Jay Hormes",
+			subtitle: "Code, Create, Immerse",
 			enableProfessionalMode: true,
 			badge: {
 				enable: true,

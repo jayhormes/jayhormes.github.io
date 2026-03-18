@@ -4,7 +4,12 @@ lang: zh-tw
 
 # 關於我
 
-歡迎來到我的專業作品集與部落格！這是 [Fuwari](https://github.com/saicaca/fuwari) 的展示網站 - 一個使用 Astro 建構的現代化、可客製化的部落格模板。
+我是 Tsung Chieh Chen，以 JayHormes 命名我的 Blog。
+
+曾經看過一篇文章 - [我為什麼鼓勵工程師寫 blog](https://dotblogs.com.tw/hatelove/2017/03/26/why-engineers-should-keep-blogging) by [Joey Chen](https://tdd.best/about/) 看完感觸很深，
+期許自己也可以將吸收到的知識分享出來，
+無論是人，還是 AI Agent 都可以傳承這些知識，
+還有我曾經走過的數位軌跡。
 
 ## 💼 專業背景
 
