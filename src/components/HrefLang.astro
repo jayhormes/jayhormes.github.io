@@ -1,6 +1,7 @@
 ---
 import { getSupportedLanguages, type SupportedLanguage } from "../config";
 import { getLanguageVariations, getLanguageFromPath } from "../utils/language-utils";
+import { getLanguageInfo } from "../utils/seo-utils";
 
 const supportedLanguages = getSupportedLanguages();
 
@@ -17,12 +18,13 @@ const currentPath = new URL(canonicalUrl).pathname;
 // Get language variations for this page
 const languageVariations = getLanguageVariations(currentPath);
 const currentLang = getLanguageFromPath(currentPath);
+const currentLanguageInfo = getLanguageInfo(currentLang);
 
 // Generate hreflang entries
 const hreflangs = Object.entries(supportedLanguages).map(([lang, langInfo]) => {
     const href = baseUrl + languageVariations[lang as SupportedLanguage];
     return {
-        lang: langInfo.code,
+        lang: langInfo.bcp47,
         href,
         isDefault: lang === 'en'
     };
@@ -45,17 +47,17 @@ const defaultHreflang = hreflangs.find(h => h.isDefault);
 <link rel="canonical" href={canonicalUrl} />
 
 <!-- Language meta tag -->
-<meta name="language" content={supportedLanguages[currentLang].code} />
+<meta name="language" content={currentLanguageInfo.bcp47} />
 
 <!-- Additional language-related meta tags -->
-<meta property="og:locale" content={supportedLanguages[currentLang].code.replace('_', '-')} />
+<meta property="og:locale" content={currentLanguageInfo.ogLocale} />
 
 {Object.entries(supportedLanguages)
     .filter(([lang]) => lang !== currentLang)
     .map(([lang, langInfo]) => (
         <meta 
             property="og:locale:alternate" 
-            content={langInfo.code.replace('_', '-')} 
+            content={langInfo.ogLocale} 
         />
     ))
 }

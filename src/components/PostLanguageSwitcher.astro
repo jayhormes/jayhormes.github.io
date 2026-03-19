@@ -1,7 +1,8 @@
 ---
 import { getSupportedLanguages } from "../config";
-import { getPostLanguageVersions, extractLanguageFromSlug } from "../utils/post-language-utils";
-import { getLanguageUrl } from "../utils/site-language-utils";
+import { extractLanguageFromSlug } from "../utils/post-language-utils";
+import { getPostLanguageVersions } from "../utils/post-language-versions";
+import { url } from "../utils/url-utils";
 import { i18n } from "../i18n/translation";
 import I18nKey from "../i18n/i18nKey";
 
@@ -32,13 +33,13 @@ const supportedLanguages = getSupportedLanguages();
 				{Object.entries(supportedLanguages).map(([langKey, langInfo]) => {
 					const isAvailable = langKey in versions;
 					const isActive = langKey === currentLang;
-					const url = isAvailable 
-						? getLanguageUrl(langKey, `/posts/${versions[langKey]}`)
+					const postUrl = isAvailable
+						? url(`/posts/${versions[langKey]}/`)
 						: '#';
 					
 					return (
 						<a
-							href={url}
+							href={postUrl}
 							class:list={[
 								'language-option',
 								{ 'active': isActive },

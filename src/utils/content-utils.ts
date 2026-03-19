@@ -14,7 +14,7 @@ async function getRawSortedPosts(lang?: string) {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang);
+			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
 			return postLang === lang;
 		});
 	}
@@ -43,6 +43,8 @@ export async function getSortedPosts(lang?: string) {
 }
 export type PostForList = {
 	slug: string;
+	id: string;
+	filePath?: string;
 	data: CollectionEntry<"posts">["data"];
 };
 export async function getSortedPostsList(lang?: string): Promise<PostForList[]> {
@@ -51,6 +53,8 @@ export async function getSortedPostsList(lang?: string): Promise<PostForList[]> 
 	// delete post.body
 	const sortedPostsList = sortedFullPosts.map((post) => ({
 		slug: post.slug,
+		id: post.id,
+		filePath: post.filePath,
 		data: post.data,
 	}));
 
@@ -70,7 +74,7 @@ export async function getTagList(lang?: string): Promise<Tag[]> {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang);
+			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
 			return postLang === lang;
 		});
 	}
@@ -106,7 +110,7 @@ export async function getCategoryList(lang?: string): Promise<Category[]> {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang);
+			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
 			return postLang === lang;
 		});
 	}
@@ -136,7 +140,7 @@ export async function getCategoryList(lang?: string): Promise<Category[]> {
 		ret.push({
 			name: c,
 			count: count[c],
-			url: getCategoryUrl(c),
+			url: getCategoryUrl(c, lang),
 		});
 	}
 	return ret;

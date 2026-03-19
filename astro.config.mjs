@@ -15,7 +15,7 @@ import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
 import remarkSectionize from "remark-sectionize";
-import { expressiveCodeConfig, enabledLanguages } from "./src/config.ts";
+import { expressiveCodeConfig, availableLanguages, enabledLanguages } from "./src/config.ts";
 import { pluginCustomCopyButton } from "./src/plugins/expressive-code/custom-copy-button.js";
 import { pluginLanguageBadge } from "./src/plugins/expressive-code/language-badge.ts";
 import { AdmonitionComponent } from "./src/plugins/rehype-component-admonition.mjs";
@@ -26,7 +26,7 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://fuwari.vercel.app/",
+	site: "https://jayhormes.github.io/",
 	base: "/",
 	trailingSlash: "always",
 	i18n: {
@@ -109,7 +109,14 @@ export default defineConfig({
 			},
 		}),
 		svelte(),
-		sitemap(),
+		sitemap({
+			i18n: {
+				defaultLocale: "en",
+				locales: Object.fromEntries(
+					enabledLanguages.map((lang) => [lang, availableLanguages[lang].bcp47]),
+				),
+			},
+		}),
 	],
 	markdown: {
 		remarkPlugins: [

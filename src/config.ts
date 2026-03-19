@@ -11,14 +11,17 @@ import { LinkPreset } from "./types/config";
 export { galleryConfig } from "./config/gallery";
 
 // All available languages in the i18n system
+// code: internal route key / config key
+// bcp47: HTML / structured data locale
+// ogLocale: Open Graph locale
 export const availableLanguages = {
-	en: { code: "en", name: "English", flag: "🇺🇸" },
-	"zh-tw": { code: "zh_TW", name: "正體中文", flag: "🇹🇼" },
-	"zh-cn": { code: "zh_CN", name: "简体中文", flag: "🇨🇳" },
-	ja: { code: "ja", name: "日本語", flag: "🇯🇵" },
-	ko: { code: "ko", name: "한국어", flag: "🇰🇷" },
-	es: { code: "es", name: "Español", flag: "🇪🇸" },
-	th: { code: "th", name: "ไทย", flag: "🇹🇭" },
+	en: { code: "en", bcp47: "en", ogLocale: "en_US", name: "English", flag: "🇺🇸" },
+	"zh-tw": { code: "zh-tw", bcp47: "zh-TW", ogLocale: "zh_TW", name: "正體中文", flag: "🇹🇼" },
+	"zh-cn": { code: "zh-cn", bcp47: "zh-CN", ogLocale: "zh_CN", name: "简体中文", flag: "🇨🇳" },
+	ja: { code: "ja", bcp47: "ja", ogLocale: "ja_JP", name: "日本語", flag: "🇯🇵" },
+	ko: { code: "ko", bcp47: "ko", ogLocale: "ko_KR", name: "한국어", flag: "🇰🇷" },
+	es: { code: "es", bcp47: "es", ogLocale: "es_ES", name: "Español", flag: "🇪🇸" },
+	th: { code: "th", bcp47: "th", ogLocale: "th_TH", name: "ไทย", flag: "🇹🇭" },
 } as const;
 
 export type AvailableLanguage = keyof typeof availableLanguages;

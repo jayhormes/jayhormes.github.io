@@ -45,7 +45,7 @@ const getTagVariant = (
     <div class="flex gap-2 flex-wrap p-1">
         {tags.map(t => (
             <ButtonTag 
-                href={getTagUrl(t.name)} 
+                href={getTagUrl(t.name, lang)} 
                 label={`View all posts with the ${t.name.trim()} tag`}
                 variant={getTagVariant(t.name.trim())}
             >

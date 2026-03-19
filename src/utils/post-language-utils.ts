@@ -1,47 +1,74 @@
-import { getCollection } from "astro:content";
 import { getSiteDefaultLanguage } from "./site-language-utils";
 import { multilingualSettings } from "../config";
 
-/**
- * Extract language from post slug
- * Examples:
- *   "my-article" -> null (default language)
- *   "my-article.zh-tw" -> "zh-tw"
- *   "my-article.en" -> "en"
- */
-export function extractLanguageFromSlug(slug: string): {
+const SUPPORTED_LANGUAGES = ["en", "zh-tw", "zh-cn", "ja", "ko", "es", "th"] as const;
+
+function parseLanguageSuffix(value: string): {
 	baseSlug: string;
 	lang: string | null;
 } {
-	const parts = slug.split(".");
+	const parts = value.split(".");
 	if (parts.length === 1) {
-		return { baseSlug: slug, lang: null };
+		return { baseSlug: value, lang: null };
 	}
 
 	const possibleLang = parts[parts.length - 1];
-	const supportedLangs = ["en", "zh-tw", "zh-cn", "ja", "ko", "es", "th"];
-
-	if (supportedLangs.includes(possibleLang)) {
+	if (SUPPORTED_LANGUAGES.includes(possibleLang as (typeof SUPPORTED_LANGUAGES)[number])) {
 		return {
 			baseSlug: parts.slice(0, -1).join("."),
 			lang: possibleLang,
 		};
 	}
 
-	return { baseSlug: slug, lang: null };
+	return { baseSlug: value, lang: null };
+}
+
+function stripExtension(fileName: string): string {
+	return fileName.replace(/\.[^.]+$/, "");
+}
+
+function getRawPostName(filePathOrId?: string): string | null {
+	if (!filePathOrId) return null;
+	const normalized = filePathOrId.replace(/\\/g, "/");
+	const fileName = normalized.split("/").pop();
+	if (!fileName) return null;
+	return stripExtension(fileName);
+}
+
+/**
+ * Extract language from post slug
+ * Prefer original filePath / id, because Astro content slug strips dots.
+ */
+export function extractLanguageFromSlug(
+	slug: string,
+	filePathOrId?: string,
+): {
+	baseSlug: string;
+	lang: string | null;
+} {
+	const rawPostName = getRawPostName(filePathOrId);
+	if (rawPostName) {
+		return parseLanguageSuffix(rawPostName);
+	}
+
+	return parseLanguageSuffix(slug);
 }
 
 /**
  * Get the language of a post, respecting siteConfig.lang
  */
-export function getPostLanguage(slug: string, frontmatterLang?: string): string {
+export function getPostLanguage(
+	slug: string,
+	frontmatterLang?: string,
+	filePathOrId?: string,
+): string {
 	// Priority 1: frontmatter lang field
 	if (frontmatterLang) {
 		return frontmatterLang;
 	}
 
 	// Priority 2: filename language suffix
-	const { lang } = extractLanguageFromSlug(slug);
+	const { lang } = extractLanguageFromSlug(slug, filePathOrId);
 	if (lang) {
 		return lang;
 	}
@@ -61,91 +88,26 @@ export function getPostLanguage(slug: string, frontmatterLang?: string): string 
 	return defaultLang;
 }
 
-/**
- * Find all language versions of a post
- * Returns: { lang: slug }
- */
-export async function getPostLanguageVersions(
-	baseSlug: string,
-): Promise<Record<string, string>> {
-	const allPosts = await getCollection("posts");
-	const versions: Record<string, string> = {};
-
-	for (const post of allPosts) {
-		const { baseSlug: postBaseSlug } = extractLanguageFromSlug(post.slug);
-
-		if (postBaseSlug === baseSlug) {
-			const postLang = getPostLanguage(post.slug, post.data.lang);
-			versions[postLang] = post.slug;
-		}
-	}
-
-	return versions;
-}
-
-/**
- * Find the best matching post for a given base slug and target language
- */
-export async function findPostByLanguage(
-	baseSlug: string,
-	targetLang: string,
-): Promise<{
-	slug: string;
-	isExactMatch: boolean;
-	actualLang: string;
-} | null> {
-	const versions = await getPostLanguageVersions(baseSlug);
+export function getPostRouteInfo(
+	slug: string,
+	options?: {
+		frontmatterLang?: string;
+		filePathOrId?: string;
+	},
+): {
+	baseSlug: string;
+	lang: string;
+	routeSlug: string[];
+} {
+	const { frontmatterLang, filePathOrId } = options ?? {};
+	const { baseSlug } = extractLanguageFromSlug(slug, filePathOrId);
+	const lang = getPostLanguage(slug, frontmatterLang, filePathOrId);
 	const defaultLang = getSiteDefaultLanguage();
 
-	// Exact match found
-	if (versions[targetLang]) {
-		return {
-			slug: versions[targetLang],
-			isExactMatch: true,
-			actualLang: targetLang,
-		};
-	}
-
-	// Fallback to default language
-	if (versions[defaultLang]) {
-		return {
-			slug: versions[defaultLang],
-			isExactMatch: false,
-			actualLang: defaultLang,
-		};
-	}
-
-	// Fallback to any available version
-	const availableLangs = Object.keys(versions);
-	if (availableLangs.length > 0) {
-		const fallbackLang = availableLangs[0];
-		return {
-			slug: versions[fallbackLang],
-			isExactMatch: false,
-			actualLang: fallbackLang,
-		};
-	}
-
-	return null;
+	return {
+		baseSlug,
+		lang,
+		routeSlug: lang === defaultLang ? [baseSlug] : [lang, baseSlug],
+	};
 }
 
-/**
- * Check if a post has a specific language version
- */
-export async function hasLanguageVersion(
-	baseSlug: string,
-	lang: string,
-): Promise<boolean> {
-	const versions = await getPostLanguageVersions(baseSlug);
-	return lang in versions;
-}
-
-/**
- * Get available languages for a post
- */
-export async function getAvailableLanguages(
-	baseSlug: string,
-): Promise<string[]> {
-	const versions = await getPostLanguageVersions(baseSlug);
-	return Object.keys(versions);
-}

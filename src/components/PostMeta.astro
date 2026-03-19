@@ -11,6 +11,7 @@ interface Props {
 	updated?: Date;
 	tags: string[];
 	category: string | null;
+	lang?: string;
 	hideTagsForMobile?: boolean;
 	hideUpdateDate?: boolean;
 }
@@ -19,6 +20,7 @@ const {
 	updated,
 	tags,
 	category,
+	lang,
 	hideTagsForMobile = false,
 	hideUpdateDate = false,
 } = Astro.props;
@@ -49,7 +51,7 @@ const tagData = tags
 	? tags.map((tag) => ({
 			name: tag.trim(),
 			variant: getTagVariant(tag.trim()),
-			url: getTagUrl(tag),
+			url: getTagUrl(tag, lang),
 		}))
 	: [];
 ---
@@ -82,7 +84,7 @@ const tagData = tags
             <Icon name="material-symbols:book-2-outline-rounded" class="text-xl"></Icon>
         </div>
         <div class="flex flex-row flex-nowrap items-center">
-            <a href={getCategoryUrl(category)} aria-label={`View all posts in the ${category} category`}
+            <a href={getCategoryUrl(category, lang)} aria-label={`View all posts in the ${category} category`}
                class="link-lg transition text-50 text-sm font-medium
                             hover:text-[var(--primary)] dark:hover:text-[var(--primary)] whitespace-nowrap">
                 {category || <span data-i18n-key={I18nKey.uncategorized}>{i18n(I18nKey.uncategorized)}</span>}
