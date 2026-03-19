@@ -1,49 +1,54 @@
 ---
-lang: en
+lang: zh-tw
 ---
 
-# About
+# 關於我
 
-Welcome to my professional portfolio and blog! This is the demo site for [Fuwari](https://github.com/saicaca/fuwari) - a modern, customizable blog template built with Astro.
+我是 Tsung Chieh Chen，以 JayHormes 命名我的 Blog。
 
-## 💼 Professional Background
+曾經看過一篇文章 - [我為什麼鼓勵工程師寫 blog](https://dotblogs.com.tw/hatelove/2017/03/26/why-engineers-should-keep-blogging) by [Joey Chen](https://tdd.best/about/) 看完感觸很深，
+期許自己也可以將吸收到的知識分享出來，
+無論是人，還是 AI Agent 都可以傳承這些知識，
+還有我曾經走過的數位軌跡。
 
-I'm a passionate full-stack developer with expertise in modern web technologies. I enjoy creating beautiful, functional, and user-friendly applications that solve real-world problems.
+## 💼 專業背景
 
-### 🛠️ Technical Skills
+我是一位熱情的全端開發者，專精於現代網頁技術。我喜歡創造美觀、實用且使用者友善的應用程式，解決真實世界的問題。
 
-- **Frontend**: React, Vue.js, Astro, TypeScript, Tailwind CSS
-- **Backend**: Node.js, Python, Go, PostgreSQL, MongoDB
+### 🛠️ 技術技能
+
+- **前端**: React, Vue.js, Astro, TypeScript, Tailwind CSS
+- **後端**: Node.js, Python, Go, PostgreSQL, MongoDB
 - **DevOps**: Docker, Kubernetes, AWS, CI/CD
-- **Tools**: Git, VS Code, Figma, Adobe Creative Suite
+- **工具**: Git, VS Code, Figma, Adobe Creative Suite
 
-### 🌟 Experience
+### 🌟 經歷
 
-- **5+ years** in web development
-- **10+ projects** delivered successfully
-- **3+ years** team leadership experience
-- **Contributor** to open-source projects
+- **5+ 年** 網頁開發經驗
+- **10+ 專案** 成功交付
+- **3+ 年** 團隊領導經驗
+- **貢獻者** 參與開源專案
 
-## 🎯 What I Do
+## 🎯 我的專長
 
-I specialize in:
-- Building responsive, accessible web applications
-- Creating intuitive user interfaces and experiences
-- Developing scalable backend systems
-- Mentoring junior developers
-- Contributing to open-source communities
+我專注於：
+- 建構響應式、可訪問的網頁應用程式
+- 創造直觀的使用者介面與體驗
+- 開發可擴展的後端系統
+- 指導初級開發者
+- 為開源社群做出貢獻
 
-## 📫 Let's Connect
+## 📫 聯繫我
 
-I'm always interested in discussing new opportunities, collaborating on interesting projects, or just having a chat about technology and development.
+我總是樂意討論新的機會、合作有趣的專案，或只是聊聊技術與開發。
 
-Feel free to reach out through any of the social links above!
+歡迎透過上方的社交連結與我聯繫！
 
 ---
 
 ::github{repo="saicaca/fuwari"}
 
-> ### Sources of images used in this site
+> ### 本站使用的圖片來源
 > - [Unsplash](https://unsplash.com/)
 > - [星と少女](https://www.pixiv.net/artworks/108916539) by [Stella](https://www.pixiv.net/users/93273965)
 > - [Rabbit - v1.4 Showcase](https://civitai.com/posts/586908) by [Rabbit_YourMajesty](https://civitai.com/user/Rabbit_YourMajesty)

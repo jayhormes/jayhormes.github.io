@@ -31,7 +31,7 @@ export default defineConfig({
 	base: "/",
 	trailingSlash: "always",
 	i18n: {
-		defaultLocale: "en",
+		defaultLocale: "zh-tw",
 		locales: enabledLanguages,
 		routing: {
 			prefixDefaultLocale: false,
@@ -112,7 +112,7 @@ export default defineConfig({
 		svelte(),
 		sitemap({
 			i18n: {
-				defaultLocale: "en",
+				defaultLocale: "zh-tw",
 				locales: Object.fromEntries(
 					enabledLanguages.map((lang) => [lang, availableLanguages[lang].bcp47]),
 				),

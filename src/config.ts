@@ -15,8 +15,8 @@ export { galleryConfig } from "./config/gallery";
 // bcp47: HTML / structured data locale
 // ogLocale: Open Graph locale
 export const availableLanguages = {
-	en: { code: "en", bcp47: "en", ogLocale: "en_US", name: "English", flag: "🇺🇸" },
 	"zh-tw": { code: "zh-tw", bcp47: "zh-TW", ogLocale: "zh_TW", name: "正體中文", flag: "🇹🇼" },
+	en: { code: "en", bcp47: "en", ogLocale: "en_US", name: "English", flag: "🇺🇸" },
 	"zh-cn": { code: "zh-cn", bcp47: "zh-CN", ogLocale: "zh_CN", name: "简体中文", flag: "🇨🇳" },
 	ja: { code: "ja", bcp47: "ja", ogLocale: "ja_JP", name: "日本語", flag: "🇯🇵" },
 	ko: { code: "ko", bcp47: "ko", ogLocale: "ko_KR", name: "한국어", flag: "🇰🇷" },
@@ -27,7 +27,7 @@ export const availableLanguages = {
 export type AvailableLanguage = keyof typeof availableLanguages;
 
 // User-configurable languages - modify this array to enable/disable languages
-export const enabledLanguages: AvailableLanguage[] = ["en", "zh-tw", "ja"];
+export const enabledLanguages: AvailableLanguage[] = ["zh-tw", "en", "ja"];
 
 // Multilingual post settings
 export const multilingualSettings = {
@@ -55,7 +55,7 @@ export type SupportedLanguage = (typeof enabledLanguages)[number];
 export const siteConfig: SiteConfig = {
 	title: "JayHormes",
 	subtitle: "Code, Create, Immerse",
-	lang: "en", // 'en', 'zh_CN', 'zh_TW', 'ja', 'ko', 'es', 'th'
+	lang: "zh-tw", // route key for default site language
 	themeColor: {
 		hue: 0, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
 		fixed: false, // Hide the theme color picker for visitors

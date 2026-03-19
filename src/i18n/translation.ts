@@ -13,7 +13,7 @@ export type Translation = {
 	[K in I18nKey]: string;
 };
 
-const defaultTranslation = en;
+const defaultTranslation = siteConfig.lang.toLowerCase() === "zh-tw" || siteConfig.lang.toLowerCase() === "zh_tw" ? zh_TW : en;
 
 const map: { [key: string]: Translation } = {
 	es: es,
@@ -65,7 +65,9 @@ export function i18n(key: I18nKey, lang?: string): string {
 	} else {
 		// Server-side: use siteConfig and convert to URL format
 		const langMap: Record<string, string> = {
+			'zh-tw': 'zh-tw',
 			'zh_TW': 'zh-tw',
+			'zh-cn': 'zh-cn',
 			'zh_CN': 'zh-cn',
 			'ja': 'ja',
 			'ko': 'ko',
@@ -73,7 +75,7 @@ export function i18n(key: I18nKey, lang?: string): string {
 			'th': 'th',
 			'en': 'en'
 		};
-		currentLang = langMap[siteConfig.lang] || 'en';
+		currentLang = langMap[siteConfig.lang] || 'zh-tw';
 	}
 	
 	return getTranslation(currentLang)[key];
