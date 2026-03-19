@@ -11,6 +11,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypeComponents from "rehype-components"; /* Render the custom directive content */
 import rehypeKatex from "rehype-katex";
 import rehypeSlug from "rehype-slug";
+import rehypeExternalLinks from "./src/plugins/rehype-external-links.ts";
 import remarkDirective from "remark-directive"; /* Handle directives */
 import remarkGithubAdmonitionsToDirectives from "remark-github-admonitions-to-directives";
 import remarkMath from "remark-math";
@@ -167,6 +168,7 @@ export default defineConfig({
 					},
 				},
 			],
+			[rehypeExternalLinks, { site: "https://jayhormes.github.io/" }],
 		],
 	},
 	vite: {
