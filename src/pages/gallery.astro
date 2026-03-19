@@ -6,7 +6,7 @@ import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { getSortedPostsList } from "../utils/content-utils";
 import { getSiteDefaultLanguage } from "../utils/site-language-utils";
-import ImageWrapper from "../components/misc/ImageWrapper.astro";
+import { getPostUrlBySlug } from "../utils/url-utils";
 
 // Use the site's default language for the root /gallery page
 const defaultLang = getSiteDefaultLanguage();
@@ -43,10 +43,6 @@ function formatDate(date: Date) {
 		month: "short",
 		day: "numeric",
 	});
-}
-
-function getPostUrl(slug: string) {
-	return `/posts/${slug}/`;
 }
 ---
 
@@ -95,10 +91,10 @@ function getPostUrl(slug: string) {
                                         {collection.posts.map(post => (
                                             <tr 
                                                 class="group border-b border-[var(--line-divider)] hover:bg-[var(--btn-plain-bg-hover)] transition-colors duration-200 cursor-pointer hover:border-[var(--primary)] hover:border-opacity-30"
-                                                onclick={`window.location.href='${getPostUrl(post.slug)}'`}
+                                                onclick={`window.location.href='${getPostUrlBySlug(post)}'`}
                                                 role="button"
                                                 tabindex="0"
-                                                onkeydown={`if(event.key==='Enter'||event.key===' '){window.location.href='${getPostUrl(post.slug)}'}`}
+                                                onkeydown={`if(event.key==='Enter'||event.key===' '){window.location.href='${getPostUrlBySlug(post)}'}`}
                                                 aria-label={`View post: ${post.data.title}`}
                                             >
                                                 <td class="py-3 px-4">
@@ -137,7 +133,7 @@ function getPostUrl(slug: string) {
                             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                                 {collection.posts.map(post => (
                                     <a 
-                                        href={getPostUrl(post.slug)} 
+                                        href={getPostUrlBySlug(post)} 
                                         class="group bg-[var(--card-bg)] rounded-lg border border-[var(--line-divider)] overflow-hidden hover:shadow-xl hover:shadow-black/10 dark:hover:shadow-black/30 transition-all duration-300 ease-in-out hover:scale-105 hover:border-[var(--primary)] hover:border-opacity-50 block"
                                         aria-label={post.data.title}
                                     >

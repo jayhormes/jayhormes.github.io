@@ -24,15 +24,14 @@ function joinUrl(...parts: string[]): string {
 }
 
 export function getPostUrlBySlug(input: PostUrlInput): string {
-	if (typeof input === "string") {
-		return url(`/posts/${input}/`);
-	}
+	const route = typeof input === "string"
+		? getPostRouteInfo(input)
+		: getPostRouteInfo(input.slug, {
+			frontmatterLang: input.data?.lang,
+			filePathOrId: input.filePath ?? input.id,
+		});
 
-	const route = getPostRouteInfo(input.slug, {
-		frontmatterLang: input.data?.lang,
-		filePathOrId: input.filePath ?? input.id,
-	});
-	return url(`/posts/${route.routeSlug.join("/")}/`);
+	return url(route.routePath);
 }
 
 function getArchivePath(lang?: string): string {

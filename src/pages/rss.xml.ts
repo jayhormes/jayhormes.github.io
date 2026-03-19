@@ -7,6 +7,7 @@ import { getProfileConfig } from "@/utils/profile-utils";
 import { getLanguageInfo, getOgImageUrl } from "@/utils/seo-utils";
 import { getSiteDefaultLanguage } from "@/utils/site-language-utils";
 import { siteConfig } from "@/config";
+import { getPostUrlBySlug } from "@/utils/url-utils";
 
 const parser = new MarkdownIt();
 
@@ -35,7 +36,7 @@ export async function buildRssFeed(context: APIContext, lang?: string) {
 				title: post.data.title,
 				pubDate: post.data.published,
 				description: post.data.description || "",
-				link: `/posts/${post.slug}/`,
+				link: getPostUrlBySlug(post),
 				customData: `<language>${languageInfo.bcp47}</language><enclosure url="${getOgImageUrl(context.site ?? new URL("https://fuwari.vercel.app"), post.data.image)}" type="image/jpeg" />`,
 				content: sanitizeHtml(parser.render(cleanedContent), {
 					allowedTags: sanitizeHtml.defaults.allowedTags.concat(["img"]),

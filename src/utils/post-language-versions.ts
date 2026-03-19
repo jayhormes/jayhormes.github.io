@@ -4,7 +4,7 @@ import { extractLanguageFromSlug, getPostRouteInfo } from "./post-language-utils
 
 /**
  * Find all language versions of a post
- * Returns: { lang: routeSlug }
+ * Returns: { lang: routePath }
  */
 export async function getPostLanguageVersions(
 	baseSlug: string,
@@ -20,7 +20,7 @@ export async function getPostLanguageVersions(
 				frontmatterLang: post.data.lang,
 				filePathOrId: post.filePath ?? post.id,
 			});
-			versions[postRoute.lang] = postRoute.routeSlug.join("/");
+			versions[postRoute.lang] = postRoute.routePath;
 		}
 	}
 

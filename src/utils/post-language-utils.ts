@@ -97,17 +97,19 @@ export function getPostRouteInfo(
 ): {
 	baseSlug: string;
 	lang: string;
-	routeSlug: string[];
+	slugSegments: string[];
+	routePath: string;
 } {
 	const { frontmatterLang, filePathOrId } = options ?? {};
 	const { baseSlug } = extractLanguageFromSlug(slug, filePathOrId);
 	const lang = getPostLanguage(slug, frontmatterLang, filePathOrId);
 	const defaultLang = getSiteDefaultLanguage();
+	const slugSegments = lang === defaultLang ? [baseSlug] : [lang, baseSlug];
 
 	return {
 		baseSlug,
 		lang,
-		routeSlug: lang === defaultLang ? [baseSlug] : [lang, baseSlug],
+		slugSegments,
+		routePath: lang === defaultLang ? `/posts/${baseSlug}/` : `/${lang}/posts/${baseSlug}/`,
 	};
 }
-
