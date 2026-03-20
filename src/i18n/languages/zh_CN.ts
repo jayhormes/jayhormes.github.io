@@ -52,4 +52,12 @@ export const zh_CN: Translation = {
 	[Key.galleryFoundPosts]: "找到 {count} 篇文章",
 	[Key.galleryNoPostsFound]: "此集合没有找到文章。",
 	[Key.galleryTryAddingTags]: "请尝试添加包含以下标签的文章：{tags}",
+
+	// Archive page
+	[Key.currentFilters]: "目前筛选：",
+	[Key.totalPosts]: "共 {count} 篇",
+	[Key.removeTag]: "移除标签：{value}",
+	[Key.removeCategory]: "移除分类：{value}",
+	[Key.removeUncategorized]: "移除：未分类",
+	[Key.clearAll]: "清除全部",
 };

@@ -49,6 +49,14 @@ enum I18nKey {
 	galleryFoundPosts = "galleryFoundPosts",
 	galleryNoPostsFound = "galleryNoPostsFound",
 	galleryTryAddingTags = "galleryTryAddingTags",
+
+	// Archive page
+	currentFilters = "currentFilters",
+	totalPosts = "totalPosts",
+	removeTag = "removeTag",
+	removeCategory = "removeCategory",
+	removeUncategorized = "removeUncategorized",
+	clearAll = "clearAll",
 }
 
 export default I18nKey;

@@ -52,4 +52,12 @@ export const ja: Translation = {
 	[Key.galleryFoundPosts]: "{count}件の投稿が見つかりました",
 	[Key.galleryNoPostsFound]: "このコレクションの投稿が見つかりませんでした。",
 	[Key.galleryTryAddingTags]: "次のタグを持つ投稿を追加してみてください：{tags}",
+
+	// Archive page
+	[Key.currentFilters]: "現在のフィルター：",
+	[Key.totalPosts]: "{count} 件",
+	[Key.removeTag]: "タグを削除：{value}",
+	[Key.removeCategory]: "カテゴリを削除：{value}",
+	[Key.removeUncategorized]: "未分類を削除",
+	[Key.clearAll]: "すべてクリア",
 };

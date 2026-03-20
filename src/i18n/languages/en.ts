@@ -52,4 +52,12 @@ export const en: Translation = {
 	[Key.galleryFoundPosts]: "Found {count} posts",
 	[Key.galleryNoPostsFound]: "No posts found for this collection.",
 	[Key.galleryTryAddingTags]: "Try adding posts with tags: {tags}",
+
+	// Archive page
+	[Key.currentFilters]: "Current filters:",
+	[Key.totalPosts]: "{count} posts",
+	[Key.removeTag]: "Remove tag: {value}",
+	[Key.removeCategory]: "Remove category: {value}",
+	[Key.removeUncategorized]: "Remove: Uncategorized",
+	[Key.clearAll]: "Clear all",
 };

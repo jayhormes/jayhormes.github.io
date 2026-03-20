@@ -52,4 +52,12 @@ export const es: Translation = {
 	[Key.galleryFoundPosts]: "Se encontraron {count} publicaciones",
 	[Key.galleryNoPostsFound]: "No se encontraron publicaciones para esta colección.",
 	[Key.galleryTryAddingTags]: "Intenta agregar publicaciones con las etiquetas: {tags}",
+
+	// Archive page
+	[Key.currentFilters]: "Filtros actuales:",
+	[Key.totalPosts]: "{count} publicaciones",
+	[Key.removeTag]: "Quitar etiqueta: {value}",
+	[Key.removeCategory]: "Quitar categoría: {value}",
+	[Key.removeUncategorized]: "Quitar: Sin categoría",
+	[Key.clearAll]: "Limpiar todo",
 };

@@ -29,6 +29,22 @@ interface Group {
 
 let groups: Group[] = [];
 
+function translate(key: I18nKey, params: Record<string, string | number> = {}) {
+	return Object.entries(params).reduce(
+		(text, [name, value]) => text.replace(`{${name}}`, String(value)),
+		i18n(key),
+	);
+}
+
+function splitCountLabel(key: I18nKey) {
+	const template = i18n(key);
+	const [before = "", after = ""] = template.split("{count}");
+	return { before, after };
+}
+
+$: totalFilteredPosts = groups.reduce((acc, group) => acc + group.posts.length, 0);
+$: totalPostsLabel = splitCountLabel(I18nKey.totalPosts);
+
 function formatDate(date: Date) {
 	const month = (date.getMonth() + 1).toString().padStart(2, "0");
 	const day = date.getDate().toString().padStart(2, "0");
@@ -133,6 +149,65 @@ onMount(() => {
 </script>
 
 <div class="card-base px-8 py-6">
+    <!-- Active Filter Bar -->
+    {#if tags.length > 0 || categories.length > 0 || uncategorized}
+        <div class="filter-bar flex flex-wrap items-center gap-2 mb-5 pb-4 border-b border-[var(--line-divider)]">
+            <span class="text-xs text-50 shrink-0">{translate(I18nKey.currentFilters)}</span>
+
+            <!-- Tag pills -->
+            {#each tags as tag}
+                <a
+                    href="?{(() => { const p = new URLSearchParams(window.location.search); const remaining = p.getAll('tag').filter(t => t !== tag); p.delete('tag'); remaining.forEach(t => p.append('tag', t)); return p.toString(); })()}"
+                    class="filter-pill notion-tag notion-tag-{getTagVariant(tag)} flex items-center gap-1 cursor-pointer"
+                    style="height: 1.5rem; font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; font-weight: 500; white-space: nowrap; text-decoration: none;"
+                    title={translate(I18nKey.removeTag, { value: tag })}
+                >
+                    <span>#</span><span>{tag}</span>
+                    <span class="opacity-60 ml-0.5">✕</span>
+                </a>
+            {/each}
+
+            <!-- Category pills -->
+            {#each categories as cat}
+                <a
+                    href="?{(() => { const p = new URLSearchParams(window.location.search); const remaining = p.getAll('category').filter(c => c !== cat); p.delete('category'); remaining.forEach(c => p.append('category', c)); return p.toString(); })()}"
+                    class="filter-pill category-pill flex items-center gap-1 cursor-pointer"
+                    style="height: 1.5rem; font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; font-weight: 500; white-space: nowrap; text-decoration: none; background-color: rgb(254 249 195); color: rgb(161 98 7); border: 1px solid rgb(254 240 138);"
+                    title={translate(I18nKey.removeCategory, { value: cat })}
+                >
+                    <span>📁</span><span>{cat}</span>
+                    <span class="opacity-60 ml-0.5">✕</span>
+                </a>
+            {/each}
+
+            <!-- Uncategorized pill -->
+            {#if uncategorized}
+                <a
+                    href="?{(() => { const p = new URLSearchParams(window.location.search); p.delete('uncategorized'); return p.toString(); })()}"
+                    class="filter-pill uncategorized-pill flex items-center gap-1 cursor-pointer"
+                    style="height: 1.5rem; font-size: 0.7rem; padding: 0.15rem 0.6rem; border-radius: 9999px; display: inline-flex; align-items: center; font-weight: 500; white-space: nowrap; text-decoration: none; background-color: rgb(243 244 246); color: rgb(75 85 99); border: 1px solid rgb(209 213 219);"
+                    title={translate(I18nKey.removeUncategorized)}
+                >
+                    <span>{i18n(I18nKey.uncategorized)}</span>
+                    <span class="opacity-60 ml-0.5">✕</span>
+                </a>
+            {/if}
+
+            <!-- Divider + post count -->
+            <span class="text-[var(--line-divider)] select-none hidden sm:inline">|</span>
+            <span class="text-xs text-50">
+                {totalPostsLabel.before}<span class="font-semibold text-[var(--primary)]">{totalFilteredPosts}</span>{totalPostsLabel.after}
+            </span>
+
+            <!-- Clear all -->
+            {#if tags.length + categories.length + (uncategorized ? 1 : 0) > 1}
+                <a href="?" class="ml-auto text-xs text-30 hover:text-[var(--primary)] transition-colors underline underline-offset-2 shrink-0">
+                    {i18n(I18nKey.clearAll)}
+                </a>
+            {/if}
+        </div>
+    {/if}
+
     {#each groups as group}
         <div>
             <div class="flex flex-row w-full items-center h-[3.75rem]">
@@ -253,6 +328,37 @@ onMount(() => {
     
     .post-row:hover .tag-indicator {
         color: rgb(var(--primary)) !important;
+    }
+
+    /* Filter bar animation */
+    .filter-bar {
+        animation: slideDown 0.25s ease-out;
+    }
+
+    @keyframes slideDown {
+        from { opacity: 0; transform: translateY(-6px); }
+        to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Filter pills hover effect */
+    .filter-pill {
+        transition: opacity 0.15s ease, transform 0.15s ease;
+    }
+    .filter-pill:hover {
+        opacity: 0.75;
+        transform: scale(0.96);
+    }
+
+    /* Dark mode overrides for category/uncategorized pills */
+    :root.dark .category-pill {
+        background-color: rgba(133 77 14 / 0.3) !important;
+        color: rgb(253 224 71) !important;
+        border-color: rgb(161 98 7) !important;
+    }
+    :root.dark .uncategorized-pill {
+        background-color: rgba(55 65 81 / 0.5) !important;
+        color: rgb(209 213 219) !important;
+        border-color: rgb(75 85 99) !important;
     }
 
     /* Notion-style tags for tooltip */

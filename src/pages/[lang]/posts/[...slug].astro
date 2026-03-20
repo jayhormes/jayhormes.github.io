@@ -55,7 +55,7 @@ const { entry, nextEntry, prevEntry } = Astro.props;
 const { Content, headings } = await entry.render();
 const { remarkPluginFrontmatter } = await entry.render();
 
-const postLang = entry.data.lang;
+const postLang = getPostLanguage(entry.slug, entry.data.lang, entry.filePath ?? entry.id);
 const profileConf = getProfileConfig(postLang);
 const baseSlug = extractLanguageFromSlug(entry.slug, entry.filePath ?? entry.id).baseSlug;
 const languageInfo = getLanguageInfo(postLang);

@@ -52,4 +52,12 @@ export const ko: Translation = {
 	[Key.galleryFoundPosts]: "{count}개의 게시물을 찾았습니다",
 	[Key.galleryNoPostsFound]: "이 컬렉션에서 게시물을 찾을 수 없습니다.",
 	[Key.galleryTryAddingTags]: "다음 태그가 있는 게시물을 추가해 보세요: {tags}",
+
+	// Archive page
+	[Key.currentFilters]: "현재 필터:",
+	[Key.totalPosts]: "게시물 {count}개",
+	[Key.removeTag]: "태그 제거: {value}",
+	[Key.removeCategory]: "카테고리 제거: {value}",
+	[Key.removeUncategorized]: "미분류 제거",
+	[Key.clearAll]: "모두 지우기",
 };

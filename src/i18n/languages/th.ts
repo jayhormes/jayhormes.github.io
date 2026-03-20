@@ -52,4 +52,12 @@ export const th: Translation = {
 	[Key.galleryFoundPosts]: "พบ {count} โพสต์",
 	[Key.galleryNoPostsFound]: "ไม่พบโพสต์สำหรับคอลเลกชันนี้",
 	[Key.galleryTryAddingTags]: "ลองเพิ่มโพสต์ที่มีป้ายกำกับ: {tags}",
+
+	// Archive page
+	[Key.currentFilters]: "ตัวกรองปัจจุบัน:",
+	[Key.totalPosts]: "{count} โพสต์",
+	[Key.removeTag]: "ลบแท็ก: {value}",
+	[Key.removeCategory]: "ลบหมวดหมู่: {value}",
+	[Key.removeUncategorized]: "ลบ: ไม่ได้จัดหมวดหมู่",
+	[Key.clearAll]: "ล้างทั้งหมด",
 };
