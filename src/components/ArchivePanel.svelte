@@ -5,14 +5,11 @@ import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import { getPostUrlBySlug } from "../utils/url-utils";
 
-export let tags: string[];
-export let categories: string[];
+export let tags: string[] = [];
+export let categories: string[] = [];
 export let sortedPosts: Post[] = [];
 
-const params = new URLSearchParams(window.location.search);
-tags = params.has("tag") ? params.getAll("tag") : [];
-categories = params.has("category") ? params.getAll("category") : [];
-const uncategorized = params.get("uncategorized");
+let uncategorized: string | null = null;
 
 interface Post {
 	slug: string;
@@ -62,7 +59,14 @@ function getTagVariant(
 	return variants[Math.abs(hash) % variants.length];
 }
 
-onMount(async () => {
+function syncFiltersFromLocation() {
+	const params = new URLSearchParams(window.location.search);
+	tags = params.has("tag") ? params.getAll("tag") : [];
+	categories = params.has("category") ? params.getAll("category") : [];
+	uncategorized = params.get("uncategorized");
+}
+
+function rebuildGroups() {
 	let filteredPosts: Post[] = sortedPosts;
 
 	if (tags.length > 0) {
@@ -101,8 +105,30 @@ onMount(async () => {
 	}));
 
 	groupedPostsArray.sort((a, b) => b.year - a.year);
-
 	groups = groupedPostsArray;
+}
+
+function updateArchiveState() {
+	syncFiltersFromLocation();
+	rebuildGroups();
+}
+
+onMount(() => {
+	updateArchiveState();
+
+	window.addEventListener("popstate", updateArchiveState);
+	const swupPageViewHandler = () => updateArchiveState();
+	const swupHooks = (window as typeof window & {
+		swup?: { hooks?: { on?: (event: string, handler: () => void) => unknown; off?: (event: string, handler: () => void) => void } };
+	}).swup?.hooks;
+	if (swupHooks?.on) {
+		swupHooks.on("page:view", swupPageViewHandler);
+	}
+
+	return () => {
+		window.removeEventListener("popstate", updateArchiveState);
+		swupHooks?.off?.("page:view", swupPageViewHandler);
+	};
 });
 </script>
 
