@@ -1,1 +1,0 @@
-import{default as l}from"./ArchivePanel.BP-05fuR.js";import"./props.CdmBw6ch.js";import"./render.Csi83kpu.js";import"./attributes.CsbKpRFk.js";import"./each.9SfiO7zs.js";import"./zh_TW.Czw4khgb.js";import"./translation.p_IXykHO.js";import"./url-utils.D7nNgrKQ.js";/* empty css                        */export{l as default};

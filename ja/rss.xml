@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JayHormes (日本語)</title><description>Code, Create, Immerse</description><link>https://jayhormes.github.io/</link><language>ja</language><item><title>記事テスト</title><link>https://jayhormes.github.io/ja/posts/article-test/</link><guid isPermaLink="true">https://jayhormes.github.io/ja/posts/article-test/</guid><description>これは記事の説明サマリーです</description><pubDate>Thu, 19 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;ヘッダーテスト&lt;/h2&gt;
+&lt;p&gt;これは本文です&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;テスト 1&lt;/li&gt;
+&lt;li&gt;テスト 2&lt;/li&gt;
+&lt;li&gt;テスト 3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;実装テスト&lt;/h2&gt;
+&lt;p&gt;ここにコードを配置します&lt;/p&gt;
+&lt;h3&gt;メソッド 1&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;print(&quot;方法一：測試1&quot;)
+result = 123123123
+print(result)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;メソッド 2&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;print(&quot;方法二：測試2&quot;)
+result = 456456456
+print(result)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;まとめ&lt;/h2&gt;
+&lt;p&gt;OKOK&lt;/p&gt;
+</content:encoded><language>ja</language><enclosure url="https://jayhormes.github.io/site-banner.png" type="image/jpeg"/></item></channel></rss>

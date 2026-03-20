@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/"><channel><title>JayHormes (English)</title><description>Code, Create, Immerse</description><link>https://jayhormes.github.io/</link><language>en</language><item><title>Article Test</title><link>https://jayhormes.github.io/en/posts/article-test/</link><guid isPermaLink="true">https://jayhormes.github.io/en/posts/article-test/</guid><description>This is the article description summary</description><pubDate>Thu, 19 Mar 2026 00:00:00 GMT</pubDate><content:encoded>&lt;h2&gt;Header Test&lt;/h2&gt;
+&lt;p&gt;This is the body text&lt;/p&gt;
+&lt;ul&gt;
+&lt;li&gt;Test 1&lt;/li&gt;
+&lt;li&gt;Test 2&lt;/li&gt;
+&lt;li&gt;Test 3&lt;/li&gt;
+&lt;/ul&gt;
+&lt;h2&gt;Implementation Test&lt;/h2&gt;
+&lt;p&gt;Place code here&lt;/p&gt;
+&lt;h3&gt;Method 1&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;print(&quot;方法一：測試1&quot;)
+result = 123123123
+print(result)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h3&gt;Method 2&lt;/h3&gt;
+&lt;pre&gt;&lt;code&gt;print(&quot;方法二：測試2&quot;)
+result = 456456456
+print(result)
+&lt;/code&gt;&lt;/pre&gt;
+&lt;h2&gt;Summary&lt;/h2&gt;
+&lt;p&gt;OKOK&lt;/p&gt;
+</content:encoded><language>en</language><enclosure url="https://jayhormes.github.io/site-banner.png" type="image/jpeg"/></item></channel></rss>
