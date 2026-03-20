@@ -23,6 +23,8 @@ export const es: Translation = {
 	[Key.wordsCount]: "palabras",
 	[Key.minuteCount]: "minuto",
 	[Key.minutesCount]: "minutos",
+	[Key.readingTime]: "{count} min de lectura",
+	[Key.wordCountLabel]: "{count} palabras",
 	[Key.postCount]: "publicación",
 	[Key.postsCount]: "publicaciones",
 

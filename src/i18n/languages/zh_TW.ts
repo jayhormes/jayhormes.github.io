@@ -23,6 +23,8 @@ export const zh_TW: Translation = {
 	[Key.wordsCount]: "字",
 	[Key.minuteCount]: "分鐘",
 	[Key.minutesCount]: "分鐘",
+	[Key.readingTime]: "約 {count} 分鐘",
+	[Key.wordCountLabel]: "{count} 個字",
 	[Key.postCount]: "篇文章",
 	[Key.postsCount]: "篇文章",
 

@@ -23,6 +23,8 @@ export const ja: Translation = {
 	[Key.wordsCount]: "文字",
 	[Key.minuteCount]: "分",
 	[Key.minutesCount]: "分",
+	[Key.readingTime]: "{count} 分",
+	[Key.wordCountLabel]: "{count} 文字",
 	[Key.postCount]: "件の投稿",
 	[Key.postsCount]: "件の投稿",
 

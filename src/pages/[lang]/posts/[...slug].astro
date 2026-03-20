@@ -61,6 +61,8 @@ const baseSlug = extractLanguageFromSlug(entry.slug, entry.filePath ?? entry.id)
 const languageInfo = getLanguageInfo(postLang);
 const postUrl = new URL(getPostUrlBySlug(entry), Astro.site).toString();
 const articleImage = getOgImageUrl(Astro.site, entry.data.image);
+const wordCountLabel = i18n(I18nKey.wordCountLabel, postLang).replace("{count}", String(remarkPluginFrontmatter.words));
+const readingTimeLabel = i18n(I18nKey.readingTime, postLang).replace("{count}", String(remarkPluginFrontmatter.minutes));
 
 const articleJsonLd = {
 	"@context": "https://schema.org",
@@ -110,7 +112,7 @@ const breadcrumbJsonLd = {
 	],
 };
 ---
-<MainGridLayout banner={entry.data.image} title={entry.data.title} description={entry.data.description} lang={entry.data.lang} setOGTypeArticle={true} headings={headings}>
+<MainGridLayout banner={entry.data.image} title={entry.data.title} description={entry.data.description} lang={postLang} setOGTypeArticle={true} headings={headings}>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(articleJsonLd)}></script>
     <script is:inline slot="head" type="application/ld+json" set:html={JSON.stringify(breadcrumbJsonLd)}></script>
     <div class="flex w-full rounded-[var(--radius-large)] overflow-hidden relative mb-4">
@@ -120,15 +122,13 @@ const breadcrumbJsonLd = {
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
                         <Icon name="material-symbols:notes-rounded"></Icon>
                     </div>
-                    <div class="text-sm">{remarkPluginFrontmatter.words} {" " + i18n(I18nKey.wordsCount)}</div>
+                    <div class="text-sm">{wordCountLabel}</div>
                 </div>
                 <div class="flex flex-row items-center">
                     <div class="transition h-6 w-6 rounded-md bg-black/5 dark:bg-white/10 text-black/50 dark:text-white/50 flex items-center justify-center mr-2">
                         <Icon name="material-symbols:schedule-outline-rounded"></Icon>
                     </div>
-                    <div class="text-sm">
-                        {remarkPluginFrontmatter.minutes} {" " + i18n(remarkPluginFrontmatter.minutes === 1 ? I18nKey.minuteCount : I18nKey.minutesCount)}
-                    </div>
+                    <div class="text-sm">{readingTimeLabel}</div>
                 </div>
             </div>
 

@@ -23,6 +23,8 @@ export const th: Translation = {
 	[Key.wordsCount]: "คำ",
 	[Key.minuteCount]: "นาที",
 	[Key.minutesCount]: "นาที",
+	[Key.readingTime]: "อ่านประมาณ {count} นาที",
+	[Key.wordCountLabel]: "{count} คำ",
 	[Key.postCount]: "โพสต์",
 	[Key.postsCount]: "โพสต์",
 
