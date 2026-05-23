@@ -27,7 +27,7 @@ import { remarkReadingTime } from "./src/plugins/remark-reading-time.mjs";
 
 // https://astro.build/config
 export default defineConfig({
-	site: "https://jayhormes.github.io/",
+	site: "https://jayhormes.com/",
 	base: "/",
 	trailingSlash: "always",
 	i18n: {
@@ -168,7 +168,7 @@ export default defineConfig({
 					},
 				},
 			],
-			[rehypeExternalLinks, { site: "https://jayhormes.github.io/" }],
+			[rehypeExternalLinks, { site: "https://jayhormes.com/" }],
 		],
 	},
 	vite: {

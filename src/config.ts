@@ -58,7 +58,7 @@ export const siteConfig: SiteConfig = {
 	lang: "zh-tw", // route key for default site language
 	themeColor: {
 		hue: 0, // Default hue for the theme color, from 0 to 360. e.g. red: 0, teal: 200, cyan: 250, pink: 345
-		fixed: false, // Hide the theme color picker for visitors
+		fixed: true, // Hide the theme color picker for visitors
 	},
 	banner: {
 		enable: true,
@@ -110,12 +110,10 @@ export const siteConfig: SiteConfig = {
 		depth: 2, // Maximum heading depth to show in the table, from 1 to 3
 	},
 	favicon: [
-		// Leave this array empty to use the default favicon
-		// {
-		//   src: '/favicon/icon.png',    // Path of the favicon, relative to the /public directory
-		//   theme: 'light',              // (Optional) Either 'light' or 'dark', set only if you have different favicons for light and dark mode
-		//   sizes: '32x32',              // (Optional) Size of the favicon, set only if you have favicons of different sizes
-		// }
+		{ src: "/favicon/icon-32.png", sizes: "32x32" },
+		{ src: "/favicon/icon-128.png", sizes: "128x128" },
+		{ src: "/favicon/icon-180.png", sizes: "180x180" },
+		{ src: "/favicon/icon-192.png", sizes: "192x192" },
 	],
 };
 
@@ -147,7 +145,7 @@ export const profileConfig: Record<string, ProfileConfig> = {
 			{
 				name: "X (Twitter)",
 				icon: "fa6-brands:x-twitter",
-				url: "https://twitter.com",
+				url: "https://x.com/becjd",
 			},
 			{
 				name: "GitHub",
@@ -175,7 +173,7 @@ export const profileConfig: Record<string, ProfileConfig> = {
 			{
 				name: "X (Twitter)",
 				icon: "fa6-brands:x-twitter",
-				url: "https://twitter.com",
+				url: "https://x.com/becjd",
 			},
 			{
 				name: "GitHub",
@@ -203,7 +201,7 @@ export const profileConfig: Record<string, ProfileConfig> = {
 			{
 				name: "X (ツイッター)",
 				icon: "fa6-brands:x-twitter",
-				url: "https://twitter.com",
+				url: "https://x.com/becjd",
 			},
 			{
 				name: "GitHub",
