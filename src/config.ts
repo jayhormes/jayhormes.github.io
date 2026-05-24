@@ -122,8 +122,8 @@ export const navBarConfig: NavBarConfig = {
 		LinkPreset.Home,
 		LinkPreset.Archive,
 		LinkPreset.Gallery,
-		LinkPreset.Projects,
-		LinkPreset.About,
+		// LinkPreset.Projects, // TODO: 等內文寫好後再開啟
+		// LinkPreset.About,    // TODO: 等內文寫好後再開啟
 	],
 };
 
