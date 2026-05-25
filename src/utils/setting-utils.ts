@@ -18,7 +18,7 @@ export function isHueFixed(): boolean {
 export function getHue(): number {
 	if (isHueFixed()) return getDefaultHue();
 	const stored = localStorage.getItem("hue");
-	return stored ? Number.parseInt(stored) : getDefaultHue();
+	return stored ? Number.parseInt(stored, 10) : getDefaultHue();
 }
 
 export function setHue(hue: number): void {

@@ -26,12 +26,12 @@ export function removeLanguageFromPath(path: string): string {
 	const hasTrailingSlash = path.endsWith("/");
 
 	if (firstSegment && Object.keys(supportedLanguages).includes(firstSegment)) {
-		const resultPath = "/" + segments.slice(1).join("/");
+		const resultPath = `/${segments.slice(1).join("/")}`;
 		// Preserve trailing slash if original had one and result isn't just root
 		return resultPath === "/"
 			? "/"
 			: hasTrailingSlash
-				? resultPath + "/"
+				? `${resultPath}/`
 				: resultPath;
 	}
 
