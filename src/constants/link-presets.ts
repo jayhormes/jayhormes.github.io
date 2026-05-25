@@ -3,10 +3,12 @@ import { i18n } from "@i18n/translation";
 import { LinkPreset, type NavBarLink } from "@/types/config";
 import { getSiteDefaultLanguage } from "@/utils/site-language-utils";
 
-export function getLinkPresets(lang?: string): { [key in LinkPreset]: NavBarLink } {
+export function getLinkPresets(lang?: string): {
+	[key in LinkPreset]: NavBarLink;
+} {
 	const currentLang = lang || getSiteDefaultLanguage();
 	const defaultLang = getSiteDefaultLanguage();
-	
+
 	// Helper function to create language-specific URLs
 	const createUrl = (path: string) => {
 		if (currentLang === defaultLang) {

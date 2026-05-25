@@ -1,5 +1,5 @@
-import { galleryConfig } from "@/config/gallery";
 import { siteConfig } from "@/config";
+import { galleryConfig } from "@/config/gallery";
 import type { GalleryCollection } from "@/types/config";
 import { normalizeLanguageCode } from "./site-language-utils";
 
@@ -8,16 +8,20 @@ import { normalizeLanguageCode } from "./site-language-utils";
  * @param lang - Language code (e.g., 'en', 'zh-tw', 'ja')
  * @returns Gallery config for the specified language, with fallback to default language
  */
-export function getGalleryConfig(lang?: string): { collections: GalleryCollection[] } {
+export function getGalleryConfig(lang?: string): {
+	collections: GalleryCollection[];
+} {
 	// Normalize language code (e.g., zh_TW -> zh-tw)
-	const normalizedLang = lang ? normalizeLanguageCode(lang) : normalizeLanguageCode(siteConfig.lang);
-	
+	const normalizedLang = lang
+		? normalizeLanguageCode(lang)
+		: normalizeLanguageCode(siteConfig.lang);
+
 	// Try to get gallery config for the requested language
 	const requestedConfig = galleryConfig[normalizedLang];
 	if (requestedConfig) {
 		return requestedConfig;
 	}
-	
+
 	// Fallback to default language
 	const defaultLang = normalizeLanguageCode(siteConfig.lang);
 	const defaultConfig = galleryConfig[defaultLang];
@@ -26,31 +30,33 @@ export function getGalleryConfig(lang?: string): { collections: GalleryCollectio
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Gallery I18n] No gallery config found for language "${normalizedLang}". ` +
-				`Using default language "${defaultLang}". ` +
-				`Consider adding gallery config for "${normalizedLang}" in config/gallery.ts`
+					`Using default language "${defaultLang}". ` +
+					`Consider adding gallery config for "${normalizedLang}" in config/gallery.ts`,
 			);
 		}
 		return defaultConfig;
 	}
-	
+
 	// Fallback to first available language
 	const firstAvailableLang = Object.keys(galleryConfig)[0];
-	const firstConfig = firstAvailableLang ? galleryConfig[firstAvailableLang] : undefined;
+	const firstConfig = firstAvailableLang
+		? galleryConfig[firstAvailableLang]
+		: undefined;
 	if (firstConfig) {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Gallery I18n] No gallery config found for default language "${defaultLang}". ` +
-				`Using first available language "${firstAvailableLang}". ` +
-				`Consider adding gallery config for "${defaultLang}" in config/gallery.ts`
+					`Using first available language "${firstAvailableLang}". ` +
+					`Consider adding gallery config for "${defaultLang}" in config/gallery.ts`,
 			);
 		}
 		return firstConfig;
 	}
-	
+
 	// Final fallback - return empty collections
 	if (import.meta.env.DEV) {
 		console.warn(
-			"[Gallery I18n] No gallery configuration found. Returning empty collections."
+			"[Gallery I18n] No gallery configuration found. Returning empty collections.",
 		);
 	}
 	return { collections: [] };
@@ -80,9 +86,12 @@ export function hasGalleryConfig(lang: string): boolean {
  * @param lang - Language code
  * @returns Matching collections
  */
-export function getCollectionsByTags(tags: string[], lang?: string): GalleryCollection[] {
+export function getCollectionsByTags(
+	tags: string[],
+	lang?: string,
+): GalleryCollection[] {
 	const config = getGalleryConfig(lang);
-	return config.collections.filter(collection => 
-		tags.some(tag => collection.tags.includes(tag))
+	return config.collections.filter((collection) =>
+		tags.some((tag) => collection.tags.includes(tag)),
 	);
 }

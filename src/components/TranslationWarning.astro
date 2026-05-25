@@ -9,8 +9,10 @@ interface Props {
 const { requestedLang, actualLang } = Astro.props;
 const supportedLanguages = getSupportedLanguages();
 
-const requestedLangInfo = supportedLanguages[requestedLang as keyof typeof supportedLanguages];
-const actualLangInfo = supportedLanguages[actualLang as keyof typeof supportedLanguages];
+const requestedLangInfo =
+	supportedLanguages[requestedLang as keyof typeof supportedLanguages];
+const actualLangInfo =
+	supportedLanguages[actualLang as keyof typeof supportedLanguages];
 ---
 
 <div class="translation-warning">

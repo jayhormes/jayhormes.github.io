@@ -6,17 +6,21 @@ import I18nKey from "@i18n/i18nKey";
 import { i18n } from "@i18n/translation";
 import MainGridLayout from "@layouts/MainGridLayout.astro";
 import { getSortedPosts } from "@utils/content-utils";
-import { getDir, getPostUrlBySlug } from "@utils/url-utils";
+import {
+	extractLanguageFromSlug,
+	getPostLanguage,
+	getPostRouteInfo,
+} from "@utils/post-language-utils";
 import { getProfileConfig } from "@utils/profile-utils";
+import { getDir, getPostUrlBySlug } from "@utils/url-utils";
 import { Icon } from "astro-icon/components";
 import { licenseConfig } from "src/config";
+import { getLanguageInfo, getOgImageUrl } from "@/utils/seo-utils";
+import { getSiteDefaultLanguage } from "@/utils/site-language-utils";
 import ImageWrapper from "../../components/misc/ImageWrapper.astro";
 import PostMetadata from "../../components/PostMeta.astro";
 import { siteConfig } from "../../config";
 import { formatDateToYYYYMMDD } from "../../utils/date-utils";
-import { getPostLanguage, extractLanguageFromSlug, getPostRouteInfo } from "@utils/post-language-utils";
-import { getLanguageInfo, getOgImageUrl } from "@/utils/seo-utils";
-import { getSiteDefaultLanguage } from "@/utils/site-language-utils";
 
 export async function getStaticPaths() {
 	const defaultLang = getSiteDefaultLanguage();
@@ -24,11 +28,19 @@ export async function getStaticPaths() {
 	const paths = [];
 
 	for (const entry of allPosts) {
-		const postLang = getPostLanguage(entry.slug, entry.data.lang, entry.filePath ?? entry.id);
+		const postLang = getPostLanguage(
+			entry.slug,
+			entry.data.lang,
+			entry.filePath ?? entry.id,
+		);
 		const postsInSameLang = await getSortedPosts(postLang);
-		const currentIndex = postsInSameLang.findIndex(p => p.id === entry.id);
-		const nextEntry = currentIndex > 0 ? postsInSameLang[currentIndex - 1] : undefined;
-		const prevEntry = currentIndex < postsInSameLang.length - 1 ? postsInSameLang[currentIndex + 1] : undefined;
+		const currentIndex = postsInSameLang.findIndex((p) => p.id === entry.id);
+		const nextEntry =
+			currentIndex > 0 ? postsInSameLang[currentIndex - 1] : undefined;
+		const prevEntry =
+			currentIndex < postsInSameLang.length - 1
+				? postsInSameLang[currentIndex + 1]
+				: undefined;
 		const postRoute = getPostRouteInfo(entry.slug, {
 			frontmatterLang: entry.data.lang,
 			filePathOrId: entry.filePath ?? entry.id,
@@ -39,7 +51,7 @@ export async function getStaticPaths() {
 			props: { entry, nextEntry, prevEntry },
 		});
 	}
-	
+
 	return paths;
 }
 
@@ -49,15 +61,28 @@ const { Content, headings } = await entry.render();
 const { remarkPluginFrontmatter } = await entry.render();
 
 // Get profile config for the post's language
-const postLang = getPostLanguage(entry.slug, entry.data.lang, entry.filePath ?? entry.id);
+const postLang = getPostLanguage(
+	entry.slug,
+	entry.data.lang,
+	entry.filePath ?? entry.id,
+);
 const profileConf = getProfileConfig(postLang);
 
-const baseSlug = extractLanguageFromSlug(entry.slug, entry.filePath ?? entry.id).baseSlug;
+const baseSlug = extractLanguageFromSlug(
+	entry.slug,
+	entry.filePath ?? entry.id,
+).baseSlug;
 const languageInfo = getLanguageInfo(postLang);
 const postUrl = new URL(getPostUrlBySlug(entry), Astro.site).toString();
 const articleImage = getOgImageUrl(Astro.site, entry.data.image);
-const wordCountLabel = i18n(I18nKey.wordCountLabel, postLang).replace("{count}", String(remarkPluginFrontmatter.words));
-const readingTimeLabel = i18n(I18nKey.readingTime, postLang).replace("{count}", String(remarkPluginFrontmatter.minutes));
+const wordCountLabel = i18n(I18nKey.wordCountLabel, postLang).replace(
+	"{count}",
+	String(remarkPluginFrontmatter.words),
+);
+const readingTimeLabel = i18n(I18nKey.readingTime, postLang).replace(
+	"{count}",
+	String(remarkPluginFrontmatter.minutes),
+);
 
 const articleJsonLd = {
 	"@context": "https://schema.org",
@@ -78,7 +103,9 @@ const articleJsonLd = {
 		url: Astro.site,
 	},
 	datePublished: formatDateToYYYYMMDD(entry.data.published),
-	dateModified: formatDateToYYYYMMDD(entry.data.updated || entry.data.published),
+	dateModified: formatDateToYYYYMMDD(
+		entry.data.updated || entry.data.published,
+	),
 	inLanguage: languageInfo.bcp47,
 };
 

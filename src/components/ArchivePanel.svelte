@@ -42,7 +42,10 @@ function splitCountLabel(key: I18nKey) {
 	return { before, after };
 }
 
-$: totalFilteredPosts = groups.reduce((acc, group) => acc + group.posts.length, 0);
+$: totalFilteredPosts = groups.reduce(
+	(acc, group) => acc + group.posts.length,
+	0,
+);
 $: totalPostsLabel = splitCountLabel(I18nKey.totalPosts);
 
 function formatDate(date: Date) {
@@ -134,9 +137,16 @@ onMount(() => {
 
 	window.addEventListener("popstate", updateArchiveState);
 	const swupPageViewHandler = () => updateArchiveState();
-	const swupHooks = (window as typeof window & {
-		swup?: { hooks?: { on?: (event: string, handler: () => void) => unknown; off?: (event: string, handler: () => void) => void } };
-	}).swup?.hooks;
+	const swupHooks = (
+		window as typeof window & {
+			swup?: {
+				hooks?: {
+					on?: (event: string, handler: () => void) => unknown;
+					off?: (event: string, handler: () => void) => void;
+				};
+			};
+		}
+	).swup?.hooks;
 	if (swupHooks?.on) {
 		swupHooks.on("page:view", swupPageViewHandler);
 	}

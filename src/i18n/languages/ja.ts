@@ -53,7 +53,8 @@ export const ja: Translation = {
 	// Gallery page
 	[Key.galleryFoundPosts]: "{count}件の投稿が見つかりました",
 	[Key.galleryNoPostsFound]: "このコレクションの投稿が見つかりませんでした。",
-	[Key.galleryTryAddingTags]: "次のタグを持つ投稿を追加してみてください：{tags}",
+	[Key.galleryTryAddingTags]:
+		"次のタグを持つ投稿を追加してみてください：{tags}",
 
 	// Archive page
 	[Key.currentFilters]: "現在のフィルター：",

@@ -6,10 +6,10 @@ import { getPostRouteInfo } from "./post-language-utils";
 type PostUrlInput =
 	| string
 	| {
-		slug: string;
-		data?: { lang?: string };
-		filePath?: string;
-		id?: string;
+			slug: string;
+			data?: { lang?: string };
+			filePath?: string;
+			id?: string;
 	  };
 
 export function pathsEqual(path1: string, path2: string) {
@@ -24,12 +24,13 @@ function joinUrl(...parts: string[]): string {
 }
 
 export function getPostUrlBySlug(input: PostUrlInput): string {
-	const route = typeof input === "string"
-		? getPostRouteInfo(input)
-		: getPostRouteInfo(input.slug, {
-			frontmatterLang: input.data?.lang,
-			filePathOrId: input.filePath ?? input.id,
-		});
+	const route =
+		typeof input === "string"
+			? getPostRouteInfo(input)
+			: getPostRouteInfo(input.slug, {
+					frontmatterLang: input.data?.lang,
+					filePathOrId: input.filePath ?? input.id,
+				});
 
 	return url(route.routePath);
 }
@@ -38,7 +39,10 @@ function getArchivePath(lang?: string): string {
 	return lang ? addLanguageToPath("/archive/", lang as never) : "/archive/";
 }
 
-function buildArchiveUrl(searchParams?: URLSearchParams, lang?: string): string {
+function buildArchiveUrl(
+	searchParams?: URLSearchParams,
+	lang?: string,
+): string {
 	const archivePath = getArchivePath(lang);
 	const query = searchParams?.toString();
 	return url(query ? `${archivePath}?${query}` : archivePath);

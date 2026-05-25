@@ -1,9 +1,19 @@
-import { availableLanguages, getSupportedLanguages, siteConfig, type AvailableLanguage } from "@/config";
-import { getSiteDefaultLanguage, normalizeLanguageCode } from "./site-language-utils";
-import { url } from "./url-utils";
 import type { APIContext } from "astro";
+import {
+	type AvailableLanguage,
+	availableLanguages,
+	getSupportedLanguages,
+	siteConfig,
+} from "@/config";
+import {
+	getSiteDefaultLanguage,
+	normalizeLanguageCode,
+} from "./site-language-utils";
+import { url } from "./url-utils";
 
-export function isSupportedLanguageKey(lang: string): lang is AvailableLanguage {
+export function isSupportedLanguageKey(
+	lang: string,
+): lang is AvailableLanguage {
 	return lang in availableLanguages;
 }
 
@@ -33,14 +43,19 @@ export function getLanguageInfo(lang?: string | null) {
 export function getLocalizedRssPath(lang?: string | null): string {
 	const languageKey = resolveLanguageKey(lang);
 	const defaultLang = getSiteDefaultLanguage();
-	return languageKey === defaultLang ? url("/rss.xml") : url(`/${languageKey}/rss.xml`);
+	return languageKey === defaultLang
+		? url("/rss.xml")
+		: url(`/${languageKey}/rss.xml`);
 }
 
 export function getDefaultOgImageUrl(site: APIContext["site"] | URL): string {
 	return new URL(url(siteConfig.banner.src), site).toString();
 }
 
-export function getOgImageUrl(site: APIContext["site"] | URL, image?: string | null): string {
+export function getOgImageUrl(
+	site: APIContext["site"] | URL,
+	image?: string | null,
+): string {
 	if (!image || image.trim() === "") {
 		return getDefaultOgImageUrl(site);
 	}

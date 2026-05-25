@@ -1,22 +1,22 @@
 ---
-import { getSupportedLanguages, siteConfig } from "../../config";
 import ArchivePanel from "../../components/ArchivePanel.svelte";
-import { i18n } from "../../i18n/translation";
+import { getSupportedLanguages, siteConfig } from "../../config";
 import I18nKey from "../../i18n/i18nKey";
+import { i18n } from "../../i18n/translation";
 import MainGridLayout from "../../layouts/MainGridLayout.astro";
 import { getSortedPosts } from "../../utils/content-utils";
 import { getSiteDefaultLanguage } from "../../utils/site-language-utils";
 
 export async function getStaticPaths() {
-    const supportedLanguages = getSupportedLanguages();
-    
-    const defaultLang = getSiteDefaultLanguage();
-    
-    return Object.keys(supportedLanguages)
-        .filter(lang => lang !== defaultLang) // Exclude the default language because it uses the root route
-        .map(lang => ({
-            params: { lang }
-        }));
+	const supportedLanguages = getSupportedLanguages();
+
+	const defaultLang = getSiteDefaultLanguage();
+
+	return Object.keys(supportedLanguages)
+		.filter((lang) => lang !== defaultLang) // Exclude the default language because it uses the root route
+		.map((lang) => ({
+			params: { lang },
+		}));
 }
 
 const { lang } = Astro.params;

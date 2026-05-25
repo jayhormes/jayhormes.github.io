@@ -1,7 +1,15 @@
-import { getSiteDefaultLanguage } from "./site-language-utils";
 import { multilingualSettings } from "../config";
+import { getSiteDefaultLanguage } from "./site-language-utils";
 
-const SUPPORTED_LANGUAGES = ["en", "zh-tw", "zh-cn", "ja", "ko", "es", "th"] as const;
+const SUPPORTED_LANGUAGES = [
+	"en",
+	"zh-tw",
+	"zh-cn",
+	"ja",
+	"ko",
+	"es",
+	"th",
+] as const;
 
 function parseLanguageSuffix(value: string): {
 	baseSlug: string;
@@ -13,7 +21,11 @@ function parseLanguageSuffix(value: string): {
 	}
 
 	const possibleLang = parts[parts.length - 1];
-	if (SUPPORTED_LANGUAGES.includes(possibleLang as (typeof SUPPORTED_LANGUAGES)[number])) {
+	if (
+		SUPPORTED_LANGUAGES.includes(
+			possibleLang as (typeof SUPPORTED_LANGUAGES)[number],
+		)
+	) {
 		return {
 			baseSlug: parts.slice(0, -1).join("."),
 			lang: possibleLang,
@@ -75,16 +87,16 @@ export function getPostLanguage(
 
 	// Priority 3: default language from site config
 	const defaultLang = getSiteDefaultLanguage();
-	
+
 	// Warn if lang is missing and warnings are enabled
 	if (multilingualSettings.warnMissingLang && import.meta.env.DEV) {
 		console.warn(
 			`[Multilingual] Post "${slug}" has no lang field in frontmatter or filename. ` +
-			`Using default language: ${defaultLang}. ` +
-			`Consider adding "lang: '${defaultLang}'" to frontmatter or using filename pattern: ${slug}.${defaultLang}.md`
+				`Using default language: ${defaultLang}. ` +
+				`Consider adding "lang: '${defaultLang}'" to frontmatter or using filename pattern: ${slug}.${defaultLang}.md`,
 		);
 	}
-	
+
 	return defaultLang;
 }
 
@@ -110,6 +122,9 @@ export function getPostRouteInfo(
 		baseSlug,
 		lang,
 		slugSegments,
-		routePath: lang === defaultLang ? `/posts/${baseSlug}/` : `/${lang}/posts/${baseSlug}/`,
+		routePath:
+			lang === defaultLang
+				? `/posts/${baseSlug}/`
+				: `/${lang}/posts/${baseSlug}/`,
 	};
 }

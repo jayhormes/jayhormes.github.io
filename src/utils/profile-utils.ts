@@ -9,14 +9,16 @@ import { normalizeLanguageCode } from "./site-language-utils";
  */
 export function getProfileConfig(lang?: string): ProfileConfig {
 	// Normalize language code (e.g., zh_TW -> zh-tw)
-	const normalizedLang = lang ? normalizeLanguageCode(lang) : normalizeLanguageCode(siteConfig.lang);
-	
+	const normalizedLang = lang
+		? normalizeLanguageCode(lang)
+		: normalizeLanguageCode(siteConfig.lang);
+
 	// Try to get profile config for the requested language
 	const requestedConfig = profileConfig[normalizedLang];
 	if (requestedConfig) {
 		return requestedConfig;
 	}
-	
+
 	// Fallback to default language
 	const defaultLang = normalizeLanguageCode(siteConfig.lang);
 	const defaultConfig = profileConfig[defaultLang];
@@ -25,30 +27,32 @@ export function getProfileConfig(lang?: string): ProfileConfig {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Profile I18n] No profile config found for language "${normalizedLang}". ` +
-				`Using default language "${defaultLang}". ` +
-				`Consider adding profile config for "${normalizedLang}" in config.ts`
+					`Using default language "${defaultLang}". ` +
+					`Consider adding profile config for "${normalizedLang}" in config.ts`,
 			);
 		}
 		return defaultConfig;
 	}
-	
+
 	// Fallback to first available language
 	const firstAvailableLang = Object.keys(profileConfig)[0];
-	const firstConfig = firstAvailableLang ? profileConfig[firstAvailableLang] : undefined;
+	const firstConfig = firstAvailableLang
+		? profileConfig[firstAvailableLang]
+		: undefined;
 	if (firstConfig) {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Profile I18n] No profile config found for default language "${defaultLang}". ` +
-				`Using first available language "${firstAvailableLang}". ` +
-				`Consider adding profile config for "${defaultLang}" in config.ts`
+					`Using first available language "${firstAvailableLang}". ` +
+					`Consider adding profile config for "${defaultLang}" in config.ts`,
 			);
 		}
 		return firstConfig;
 	}
-	
+
 	// This should never happen, but just in case
 	throw new Error(
-		"[Profile I18n] No profile configuration found. Please add at least one language in config.ts"
+		"[Profile I18n] No profile configuration found. Please add at least one language in config.ts",
 	);
 }
 

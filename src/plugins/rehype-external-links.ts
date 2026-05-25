@@ -7,7 +7,9 @@ interface RehypeExternalLinksOptions {
 
 const EXTERNAL_LINK_REL = ["noopener", "noreferrer"];
 
-export default function rehypeExternalLinks(options: RehypeExternalLinksOptions) {
+export default function rehypeExternalLinks(
+	options: RehypeExternalLinksOptions,
+) {
 	const siteUrl = new URL(options.site);
 
 	return (tree: Root) => {

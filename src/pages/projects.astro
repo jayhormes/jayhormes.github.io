@@ -3,11 +3,11 @@
 import { render } from "astro:content";
 import Markdown from "../components/misc/Markdown.astro";
 import { siteConfig } from "../config";
-import { getSpecByLangAndName } from "../utils/spec-utils";
 import I18nKey from "../i18n/i18nKey";
 import { i18n } from "../i18n/translation";
 import MainGridLayout from "../layouts/MainGridLayout.astro";
 import { getSiteDefaultLanguage } from "../utils/site-language-utils";
+import { getSpecByLangAndName } from "../utils/spec-utils";
 
 // For root pages, use the site's configured default language
 const currentLang = getSiteDefaultLanguage();

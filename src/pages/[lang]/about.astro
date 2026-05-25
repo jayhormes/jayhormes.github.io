@@ -1,25 +1,25 @@
 ---
-import { getSupportedLanguages, siteConfig } from "../../config";
 import { render } from "astro:content";
 import Markdown from "@components/misc/Markdown.astro";
 import ProfileHeader from "@components/widget/ProfileHeader.astro";
-import { getProfileConfig } from "../../utils/profile-utils";
-import { getSpecByLangAndName } from "../../utils/spec-utils";
+import { getSupportedLanguages, siteConfig } from "../../config";
 import I18nKey from "../../i18n/i18nKey";
 import { i18n } from "../../i18n/translation";
 import MainGridLayout from "../../layouts/MainGridLayout.astro";
+import { getProfileConfig } from "../../utils/profile-utils";
 import { getSiteDefaultLanguage } from "../../utils/site-language-utils";
+import { getSpecByLangAndName } from "../../utils/spec-utils";
 
 export async function getStaticPaths() {
-    const supportedLanguages = getSupportedLanguages();
-    
-    const defaultLang = getSiteDefaultLanguage();
-    
-    return Object.keys(supportedLanguages)
-        .filter(lang => lang !== defaultLang) // Exclude the default language because it uses the root route
-        .map(lang => ({
-            params: { lang }
-        }));
+	const supportedLanguages = getSupportedLanguages();
+
+	const defaultLang = getSiteDefaultLanguage();
+
+	return Object.keys(supportedLanguages)
+		.filter((lang) => lang !== defaultLang) // Exclude the default language because it uses the root route
+		.map((lang) => ({
+			params: { lang },
+		}));
 }
 
 const { lang } = Astro.params;

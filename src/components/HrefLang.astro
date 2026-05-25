@@ -1,12 +1,15 @@
 ---
 import { getSupportedLanguages, type SupportedLanguage } from "../config";
-import { getLanguageVariations, getLanguageFromPath } from "../utils/language-utils";
+import {
+	getLanguageFromPath,
+	getLanguageVariations,
+} from "../utils/language-utils";
 import { getLanguageInfo } from "../utils/seo-utils";
 
 const supportedLanguages = getSupportedLanguages();
 
 export interface Props {
-    canonicalUrl: string;
+	canonicalUrl: string;
 }
 
 const { canonicalUrl } = Astro.props;
@@ -22,16 +25,16 @@ const currentLanguageInfo = getLanguageInfo(currentLang);
 
 // Generate hreflang entries
 const hreflangs = Object.entries(supportedLanguages).map(([lang, langInfo]) => {
-    const href = baseUrl + languageVariations[lang as SupportedLanguage];
-    return {
-        lang: langInfo.bcp47,
-        href,
-        isDefault: lang === 'en'
-    };
+	const href = baseUrl + languageVariations[lang as SupportedLanguage];
+	return {
+		lang: langInfo.bcp47,
+		href,
+		isDefault: lang === "en",
+	};
 });
 
 // Add x-default for English
-const defaultHreflang = hreflangs.find(h => h.isDefault);
+const defaultHreflang = hreflangs.find((h) => h.isDefault);
 ---
 
 <!-- hreflang tags for SEO -->

@@ -13,7 +13,11 @@ export type Translation = {
 	[K in I18nKey]: string;
 };
 
-const defaultTranslation = siteConfig.lang.toLowerCase() === "zh-tw" || siteConfig.lang.toLowerCase() === "zh_tw" ? zh_TW : en;
+const defaultTranslation =
+	siteConfig.lang.toLowerCase() === "zh-tw" ||
+	siteConfig.lang.toLowerCase() === "zh_tw"
+		? zh_TW
+		: en;
 
 const map: { [key: string]: Translation } = {
 	es: es,
@@ -42,41 +46,41 @@ export function i18n(key: I18nKey, lang?: string): string {
 	if (lang) {
 		return getTranslation(lang)[key];
 	}
-	
+
 	// Try to get language from current path
 	let currentLang = null;
-	if (typeof window !== 'undefined') {
+	if (typeof window !== "undefined") {
 		currentLang = getLanguageFromPath(window.location.pathname);
-		
-		// Special case: if we're on root path and siteConfig is not 'en', 
+
+		// Special case: if we're on root path and siteConfig is not 'en',
 		// use the site's configured language instead of defaulting to 'en'
-		if (window.location.pathname === '/' && siteConfig.lang !== 'en') {
+		if (window.location.pathname === "/" && siteConfig.lang !== "en") {
 			// Convert siteConfig lang format to URL format
 			const langMap: Record<string, string> = {
-				'zh_TW': 'zh-tw',
-				'zh_CN': 'zh-cn',
-				'ja': 'ja',
-				'ko': 'ko',
-				'es': 'es',
-				'th': 'th'
+				zh_TW: "zh-tw",
+				zh_CN: "zh-cn",
+				ja: "ja",
+				ko: "ko",
+				es: "es",
+				th: "th",
 			};
 			currentLang = langMap[siteConfig.lang] || currentLang;
 		}
 	} else {
 		// Server-side: use siteConfig and convert to URL format
 		const langMap: Record<string, string> = {
-			'zh-tw': 'zh-tw',
-			'zh_TW': 'zh-tw',
-			'zh-cn': 'zh-cn',
-			'zh_CN': 'zh-cn',
-			'ja': 'ja',
-			'ko': 'ko',
-			'es': 'es',
-			'th': 'th',
-			'en': 'en'
+			"zh-tw": "zh-tw",
+			zh_TW: "zh-tw",
+			"zh-cn": "zh-cn",
+			zh_CN: "zh-cn",
+			ja: "ja",
+			ko: "ko",
+			es: "es",
+			th: "th",
+			en: "en",
 		};
-		currentLang = langMap[siteConfig.lang] || 'zh-tw';
+		currentLang = langMap[siteConfig.lang] || "zh-tw";
 	}
-	
+
 	return getTranslation(currentLang)[key];
 }

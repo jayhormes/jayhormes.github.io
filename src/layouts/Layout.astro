@@ -6,9 +6,13 @@ import "@fontsource/roboto/700.css";
 import GlobalStyles from "@components/GlobalStyles.astro";
 import HrefLang from "@components/HrefLang.astro";
 import I18nUpdater from "@components/I18nUpdater.astro";
-import { siteConfig, getSupportedLanguages } from "@/config";
+import { getSupportedLanguages, siteConfig } from "@/config";
 import { getProfileConfig } from "@/utils/profile-utils";
-import { getLanguageInfo, getLocalizedRssPath, getOgImageUrl } from "@/utils/seo-utils";
+import {
+	getLanguageInfo,
+	getLocalizedRssPath,
+	getOgImageUrl,
+} from "@/utils/seo-utils";
 import {
 	AUTO_MODE,
 	BANNER_HEIGHT,
@@ -21,8 +25,8 @@ import {
 } from "../constants/constants";
 import { defaultFavicons } from "../constants/icon";
 import type { Favicon } from "../types/config";
-import { pathsEqual, url } from "../utils/url-utils";
 import { getSiteDefaultLanguage } from "../utils/site-language-utils";
+import { pathsEqual, url } from "../utils/url-utils";
 import "katex/dist/katex.css";
 
 interface Props {
@@ -48,21 +52,21 @@ function isHomePageCheck(pathname: string): boolean {
 	if (pathsEqual(pathname, url("/"))) {
 		return true;
 	}
-	
+
 	// Check if it's a language-specific home page (e.g., /zh-tw/, /ja/)
 	const supportedLanguages = getSupportedLanguages();
 	const defaultLang = getSiteDefaultLanguage();
-	
+
 	for (const lang of Object.keys(supportedLanguages)) {
 		// Skip default language as it uses root path
 		if (lang === defaultLang) continue;
-		
+
 		// Check if pathname matches language home page
 		if (pathsEqual(pathname, url(`/${lang}/`))) {
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 

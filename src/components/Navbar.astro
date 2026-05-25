@@ -3,12 +3,12 @@ import { Icon } from "astro-icon/components";
 import { navBarConfig, siteConfig } from "../config";
 import { getLinkPresets } from "../constants/link-presets";
 import { LinkPreset, type NavBarLink } from "../types/config";
-import { url } from "../utils/url-utils";
 import { getLanguageFromPath } from "../utils/language-utils";
 import { getSiteDefaultLanguage } from "../utils/site-language-utils";
+import { url } from "../utils/url-utils";
+import LanguageSelector from "./LanguageSelector.astro";
 import LightDarkSwitch from "./LightDarkSwitch.svelte";
 import Search from "./Search.svelte";
-import LanguageSelector from "./LanguageSelector.astro";
 import DisplaySettings from "./widget/DisplaySettings.svelte";
 import NavMenuPanel from "./widget/NavMenuPanel.astro";
 
@@ -21,10 +21,10 @@ const defaultLang = getSiteDefaultLanguage();
 
 // Helper function to create language-aware URLs for non-preset links
 const createLanguageUrl = (path: string) => {
-    if (currentLang === defaultLang) {
-        return url(path);
-    }
-    return url(`/${currentLang}${path}`);
+	if (currentLang === defaultLang) {
+		return url(path);
+	}
+	return url(`/${currentLang}${path}`);
 };
 
 let links: NavBarLink[] = navBarConfig.links.map(
@@ -35,7 +35,7 @@ let links: NavBarLink[] = navBarConfig.links.map(
 		}
 		return {
 			...item,
-			url: item.external ? item.url : createLanguageUrl(item.url)
+			url: item.external ? item.url : createLanguageUrl(item.url),
 		};
 	},
 );

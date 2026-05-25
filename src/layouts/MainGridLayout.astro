@@ -8,14 +8,14 @@ import type { MarkdownHeading } from "astro";
 import { Icon } from "astro-icon/components";
 import ImageWrapper from "../components/misc/ImageWrapper.astro";
 import TOC from "../components/widget/TOC.astro";
-import { siteConfig, getSupportedLanguages } from "../config";
+import { getSupportedLanguages, siteConfig } from "../config";
 import {
 	BANNER_HEIGHT,
 	BANNER_HEIGHT_EXTEND,
 	MAIN_PANEL_OVERLAPS_BANNER_HEIGHT,
 } from "../constants/constants";
-import { pathsEqual, url } from "../utils/url-utils";
 import { getSiteDefaultLanguage } from "../utils/site-language-utils";
+import { pathsEqual, url } from "../utils/url-utils";
 import Layout from "./Layout.astro";
 
 interface Props {
@@ -45,21 +45,21 @@ function isHomePageCheck(pathname: string): boolean {
 	if (pathsEqual(pathname, url("/"))) {
 		return true;
 	}
-	
+
 	// Check if it's a language-specific home page (e.g., /zh-tw/, /ja/)
 	const supportedLanguages = getSupportedLanguages();
 	const defaultLang = getSiteDefaultLanguage();
-	
+
 	for (const lang of Object.keys(supportedLanguages)) {
 		// Skip default language as it uses root path
 		if (lang === defaultLang) continue;
-		
+
 		// Check if pathname matches language home page
 		if (pathsEqual(pathname, url(`/${lang}/`))) {
 			return true;
 		}
 	}
-	
+
 	return false;
 }
 

@@ -10,68 +10,70 @@ import { normalizeLanguageCode } from "./site-language-utils";
  */
 export async function getSpecByLangAndName(name: string, lang?: string) {
 	const allSpecs = await getCollection("spec");
-	
+
 	// Normalize language code
-	const normalizedLang = lang ? normalizeLanguageCode(lang) : normalizeLanguageCode(siteConfig.lang);
+	const normalizedLang = lang
+		? normalizeLanguageCode(lang)
+		: normalizeLanguageCode(siteConfig.lang);
 	const defaultLang = normalizeLanguageCode(siteConfig.lang);
-	
+
 	// Try to find content with language suffix first (e.g., about.zh-tw.md)
 	const withLangSuffix = allSpecs.find(
-		spec => spec.id === `${name}.${normalizedLang}.md`
+		(spec) => spec.id === `${name}.${normalizedLang}.md`,
 	);
 	if (withLangSuffix) {
 		return withLangSuffix;
 	}
-	
+
 	// Try to find content with lang in frontmatter
 	const withLangInFrontmatter = allSpecs.find(
-		spec => spec.id === `${name}.md` && spec.data.lang === normalizedLang
+		(spec) => spec.id === `${name}.md` && spec.data.lang === normalizedLang,
 	);
 	if (withLangInFrontmatter) {
 		return withLangInFrontmatter;
 	}
-	
+
 	// Fallback to default language
 	const defaultWithSuffix = allSpecs.find(
-		spec => spec.id === `${name}.${defaultLang}.md`
+		(spec) => spec.id === `${name}.${defaultLang}.md`,
 	);
 	if (defaultWithSuffix) {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Spec I18n] No ${name} content found for language "${normalizedLang}". ` +
-				`Using default language "${defaultLang}".`
+					`Using default language "${defaultLang}".`,
 			);
 		}
 		return defaultWithSuffix;
 	}
-	
+
 	const defaultWithFrontmatter = allSpecs.find(
-		spec => spec.id === `${name}.md` && spec.data.lang === defaultLang
+		(spec) => spec.id === `${name}.md` && spec.data.lang === defaultLang,
 	);
 	if (defaultWithFrontmatter) {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Spec I18n] No ${name} content found for language "${normalizedLang}". ` +
-				`Using default language "${defaultLang}".`
+					`Using default language "${defaultLang}".`,
 			);
 		}
 		return defaultWithFrontmatter;
 	}
-	
+
 	// Final fallback to any file matching the name
 	const anyMatch = allSpecs.find(
-		spec => spec.id === `${name}.md` || spec.id.startsWith(`${name}.`)
+		(spec) => spec.id === `${name}.md` || spec.id.startsWith(`${name}.`),
 	);
 	if (anyMatch) {
 		if (import.meta.env.DEV) {
 			console.warn(
 				`[Spec I18n] No ${name} content found for language "${normalizedLang}" or default "${defaultLang}". ` +
-				`Using first available: ${anyMatch.id}`
+					`Using first available: ${anyMatch.id}`,
 			);
 		}
 		return anyMatch;
 	}
-	
+
 	return null;
 }
 
@@ -80,10 +82,12 @@ export async function getSpecByLangAndName(name: string, lang?: string) {
  * @param name - Content name (e.g., 'about', 'projects')
  * @returns Array of language codes that have this content
  */
-export async function getAvailableSpecLanguages(name: string): Promise<string[]> {
+export async function getAvailableSpecLanguages(
+	name: string,
+): Promise<string[]> {
 	const allSpecs = await getCollection("spec");
 	const languages: string[] = [];
-	
+
 	for (const spec of allSpecs) {
 		// Check if filename matches the pattern
 		if (spec.id === `${name}.md`) {
@@ -91,7 +95,7 @@ export async function getAvailableSpecLanguages(name: string): Promise<string[]>
 			if (spec.data.lang) {
 				languages.push(spec.data.lang);
 			}
-		} else if (spec.id.startsWith(`${name}.`) && spec.id.endsWith('.md')) {
+		} else if (spec.id.startsWith(`${name}.`) && spec.id.endsWith(".md")) {
 			// Extract language from filename (e.g., about.zh-tw.md -> zh-tw)
 			const match = spec.id.match(new RegExp(`${name}\\.([^.]+)\\.md`));
 			if (match) {
@@ -99,6 +103,6 @@ export async function getAvailableSpecLanguages(name: string): Promise<string[]>
 			}
 		}
 	}
-	
+
 	return [...new Set(languages)]; // Remove duplicates
 }

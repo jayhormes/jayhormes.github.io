@@ -1,6 +1,9 @@
 import { getCollection } from "astro:content";
+import {
+	extractLanguageFromSlug,
+	getPostRouteInfo,
+} from "./post-language-utils";
 import { getSiteDefaultLanguage } from "./site-language-utils";
-import { extractLanguageFromSlug, getPostRouteInfo } from "./post-language-utils";
 
 /**
  * Find all language versions of a post
@@ -13,7 +16,10 @@ export async function getPostLanguageVersions(
 	const versions: Record<string, string> = {};
 
 	for (const post of allPosts) {
-		const { baseSlug: postBaseSlug } = extractLanguageFromSlug(post.slug, post.filePath ?? post.id);
+		const { baseSlug: postBaseSlug } = extractLanguageFromSlug(
+			post.slug,
+			post.filePath ?? post.id,
+		);
 
 		if (postBaseSlug === baseSlug) {
 			const postRoute = getPostRouteInfo(post.slug, {

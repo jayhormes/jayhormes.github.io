@@ -14,7 +14,11 @@ async function getRawSortedPosts(lang?: string) {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
+			const postLang = getPostLanguage(
+				post.slug,
+				post.data.lang,
+				post.filePath ?? post.id,
+			);
 			return postLang === lang;
 		});
 	}
@@ -47,7 +51,9 @@ export type PostForList = {
 	filePath?: string;
 	data: CollectionEntry<"posts">["data"];
 };
-export async function getSortedPostsList(lang?: string): Promise<PostForList[]> {
+export async function getSortedPostsList(
+	lang?: string,
+): Promise<PostForList[]> {
 	const sortedFullPosts = await getRawSortedPosts(lang);
 
 	// delete post.body
@@ -74,7 +80,11 @@ export async function getTagList(lang?: string): Promise<Tag[]> {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
+			const postLang = getPostLanguage(
+				post.slug,
+				post.data.lang,
+				post.filePath ?? post.id,
+			);
 			return postLang === lang;
 		});
 	}
@@ -110,7 +120,11 @@ export async function getCategoryList(lang?: string): Promise<Category[]> {
 	let filteredPosts = allBlogPosts;
 	if (lang) {
 		filteredPosts = allBlogPosts.filter((post) => {
-			const postLang = getPostLanguage(post.slug, post.data.lang, post.filePath ?? post.id);
+			const postLang = getPostLanguage(
+				post.slug,
+				post.data.lang,
+				post.filePath ?? post.id,
+			);
 			return postLang === lang;
 		});
 	}

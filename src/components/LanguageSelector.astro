@@ -1,10 +1,16 @@
 ---
 import { Icon } from "astro-icon/components";
 import { getSupportedLanguages } from "../config";
-import { i18n } from "../i18n/translation";
 import I18nKey from "../i18n/i18nKey";
-import { getSiteDefaultLanguage, getLanguageUrl } from "../utils/site-language-utils";
-import { getLanguageFromPath, removeLanguageFromPath } from "../utils/language-utils";
+import { i18n } from "../i18n/translation";
+import {
+	getLanguageFromPath,
+	removeLanguageFromPath,
+} from "../utils/language-utils";
+import {
+	getLanguageUrl,
+	getSiteDefaultLanguage,
+} from "../utils/site-language-utils";
 
 const supportedLanguages = getSupportedLanguages();
 const defaultLang = getSiteDefaultLanguage();
