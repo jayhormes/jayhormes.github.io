@@ -27,3 +27,9 @@ bun.lockb
 yarn.lock
 
 .vscode
+
+# wrangler files
+.wrangler
+.dev.vars*
+!.dev.vars.example
+!.env.example
