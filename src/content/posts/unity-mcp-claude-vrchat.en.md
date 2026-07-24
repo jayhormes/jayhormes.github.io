@@ -215,7 +215,7 @@ A: PhysBone is the physics simulation for hair, clothes, and accessories — it 
 
 ### Q: Roughly how much does dressing one avatar cost in tokens?
 
-A: The full session in this article (hairstyle + outfit + two menus) came to about **$12.88 USD**, dominated by Opus 4.7's 95.4k output and 15.8m cache reads. You can cut this down by:
+A: The full session in this article (hairstyle + outfit + two menus) came to about **$12.88 USD** (API estimate only), dominated by Opus 4.7's 95.4k output and 15.8m cache reads. You can cut this down by:
 
 - Using Sonnet 4.6 / Haiku 4.5 for simpler operations (faster and cheaper)
 - Switching to Opus only when merging complex structures
